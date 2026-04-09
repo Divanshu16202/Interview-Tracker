@@ -1,0 +1,33 @@
+<h1>AI Mock Interview</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {% for q in questions %}
+        <div style="margin-bottom:20px;">
+            <p><strong>{{ forloop.counter }}. {{ q.question }}</strong></p>
+
+            <label>
+                <input type="radio" name="{{ q.id }}" value="{{ q.option1 }}">
+                {{ q.option1 }}
+            </label><br>
+
+            <label>
+                <input type="radio" name="{{ q.id }}" value="{{ q.option2 }}">
+                {{ q.option2 }}
+            </label><br>
+
+            <label>
+                <input type="radio" name="{{ q.id }}" value="{{ q.option3 }}">
+                {{ q.option3 }}
+            </label><br>
+
+            <label>
+                <input type="radio" name="{{ q.id }}" value="{{ q.option4 }}">
+                {{ q.option4 }}
+            </label><br>
+        </div>
+    {% endfor %}
+
+    <button type="submit">Submit Test</button>
+</form>

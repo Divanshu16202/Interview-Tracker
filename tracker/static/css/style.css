@@ -1,0 +1,51 @@
+body {
+    background-color: #f4f6f9;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.table th {
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table td {
+    font-size: 14px;
+}
+
+.btn {
+    border-radius: 8px;
+}
+
+#searchInput {
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.viva-container {
+    background-color: #f8f9fc;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+.viva-header h2 {
+    color: #2c3e50;
+}
+
+.accordion-button {
+    background-color: #ffffff;
+    font-size: 15px;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.accordion-body {
+    font-size: 14px;
+    background-color: #f1f3f6;
+}

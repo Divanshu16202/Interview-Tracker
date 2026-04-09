@@ -1,0 +1,1009 @@
+{% extends 'tracker/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="viva-wrapper">
+    <!-- Page Header -->
+    <div class="viva-header">
+        <div class="header-content">
+            <h1>
+                <i class="fas fa-question-circle"></i>
+                Technical Viva Questions
+            </h1>
+            <p>Master your technical interviews with comprehensive Q&A for all core subjects</p>
+        </div>
+    </div>
+
+    <div class="viva-container">
+        <!-- Topic Selection -->
+        <div class="topic-selector">
+            <div class="selector-label">
+                <i class="fas fa-book-open"></i>
+                <span>Select Subject:</span>
+            </div>
+            <select class="topic-dropdown" onchange="showQuestions(this.value)">
+                <option value="">-- Choose a topic --</option>
+                <option value="dsa">📊 Data Structures & Algorithms</option>
+                <option value="python">🐍 Python Programming</option>
+                <option value="dbms">🗄️ Database Management System</option>
+                <option value="os">⚙️ Operating System</option>
+                <option value="cn">🌐 Computer Networks</option>
+            </select>
+        </div>
+
+        <!-- Questions Container -->
+        <div id="questionsContainer" class="questions-container">
+            <div class="welcome-message">
+                <i class="fas fa-arrow-up"></i>
+                <p>Select a topic to view important viva questions</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// All 150 questions (30 per topic) are included here
+const vivaQuestions = {
+    // Data Structures & Algorithms - 30 Questions
+    dsa: [
+        {
+            q: "What is a Data Structure? Explain different types.",
+            a: "A data structure is a specialized format for organizing, processing, retrieving and storing data. Types: <br><br>📌 <strong>Linear Data Structures:</strong> Array, Stack, Queue, Linked List<br>📌 <strong>Non-Linear Data Structures:</strong> Tree, Graph<br>📌 <strong>Static Data Structures:</strong> Array (fixed size)<br>📌 <strong>Dynamic Data Structures:</strong> Linked List, Stack, Queue (size changes during runtime)"
+        },
+        {
+            q: "Explain Arrays and their operations with complexity analysis.",
+            a: "Array is a linear data structure storing elements of same type in contiguous memory locations.<br><br><strong>Operations & Complexities:</strong><br>• Access: O(1) - Direct indexing<br>• Search: O(n) - Linear search, O(log n) - Binary search (sorted)<br>• Insertion: O(n) - Shifting elements<br>• Deletion: O(n) - Shifting elements"
+        },
+        {
+            q: "What is a Linked List? Compare with Arrays.",
+            a: "Linked List is a linear data structure where elements are stored in nodes, each node containing data and reference to next node.<br><br><strong>Comparison with Arrays:</strong><br>• <strong>Memory:</strong> Arrays - Contiguous; Linked List - Non-contiguous<br>• <strong>Size:</strong> Arrays - Fixed; Linked List - Dynamic<br>• <strong>Access:</strong> Arrays - O(1); Linked List - O(n)<br>• <strong>Insertion/Deletion:</strong> Arrays - O(n); Linked List - O(1) at head"
+        },
+        {
+            q: "Explain Stack and its applications.",
+            a: "Stack is a linear data structure following LIFO (Last In First Out) principle.<br><br><strong>Operations:</strong><br>• Push: O(1) - Add element<br>• Pop: O(1) - Remove element<br>• Peek/Top: O(1) - View top element<br><br><strong>Applications:</strong><br>• Function call management (recursion)<br>• Expression evaluation (infix/postfix)<br>• Undo operations in editors<br>• Backtracking algorithms"
+        },
+        {
+            q: "What is Queue? Explain types.",
+            a: "Queue is a linear data structure following FIFO (First In First Out) principle.<br><br><strong>Types of Queues:</strong><br>1. <strong>Simple Queue:</strong> Basic FIFO<br>2. <strong>Circular Queue:</strong> Last connects to first<br>3. <strong>Priority Queue:</strong> Elements processed by priority<br>4. <strong>Deque (Double-ended Queue):</strong> Insert/delete from both ends"
+        },
+        {
+            q: "Explain Tree data structure and its terminology.",
+            a: "Tree is a non-linear hierarchical data structure with root and nodes connected by edges.<br><br><strong>Terminology:</strong><br>• <strong>Root:</strong> Topmost node<br>• <strong>Parent/Child:</strong> Connected nodes relationship<br>• <strong>Leaf:</strong> Node with no children<br>• <strong>Subtree:</strong> Tree within a tree<br>• <strong>Height:</strong> Longest path from root to leaf<br>• <strong>Depth:</strong> Path length from root"
+        },
+        {
+            q: "What is Binary Tree? Explain types.",
+            a: "Binary Tree is a tree where each node has at most 2 children (left and right).<br><br><strong>Types:</strong><br>1. <strong>Full Binary Tree:</strong> Each node has 0 or 2 children<br>2. <strong>Complete Binary Tree:</strong> All levels filled except last<br>3. <strong>Perfect Binary Tree:</strong> All internal nodes have 2 children and leaves at same level<br>4. <strong>Balanced Binary Tree:</strong> Height difference ≤ 1<br>5. <strong>Binary Search Tree (BST):</strong> Left < Root < Right"
+        },
+        {
+            q: "Explain Tree Traversal methods.",
+            a: "Tree traversal means visiting all nodes in a specific order.<br><br><strong>Depth-First Search (DFS):</strong><br>• <strong>Inorder (Left-Root-Right):</strong> Gives sorted order in BST<br>• <strong>Preorder (Root-Left-Right):</strong> Used to create tree copy<br>• <strong>Postorder (Left-Right-Root):</strong> Used to delete tree<br><br><strong>Breadth-First Search (BFS):</strong><br>• <strong>Level Order:</strong> Visit nodes level by level"
+        },
+        {
+            q: "What is Binary Search Tree (BST)? Explain operations.",
+            a: "BST is a binary tree where left subtree contains smaller values and right subtree contains larger values.<br><br><strong>Operations & Complexities (Average):</strong><br>• <strong>Search:</strong> O(log n) - Compare and go left/right<br>• <strong>Insert:</strong> O(log n) - Find position and insert<br>• <strong>Delete:</strong> O(log n) - Three cases (leaf, one child, two children)"
+        },
+        {
+            q: "Explain Graph data structure and representations.",
+            a: "Graph is a non-linear data structure consisting of vertices (nodes) and edges (connections).<br><br><strong>Representations:</strong><br>1. <strong>Adjacency Matrix:</strong> 2D array - Space O(V²)<br>2. <strong>Adjacency List:</strong> List of lists - Space O(V+E)<br><br><strong>Types:</strong><br>• Directed vs Undirected<br>• Weighted vs Unweighted"
+        },
+        {
+            q: "What is Graph Traversal? Explain BFS and DFS.",
+            a: "Graph traversal algorithms to visit all nodes.<br><br><strong>BFS (Breadth-First Search):</strong><br>• Uses Queue<br>• Level by level traversal<br>• Finds shortest path in unweighted graph<br>• Time: O(V+E)<br><br><strong>DFS (Depth-First Search):</strong><br>• Uses Stack/Recursion<br>• Goes deep then backtrack<br>• Used in topological sorting<br>• Time: O(V+E)"
+        },
+        {
+            q: "Explain Sorting Algorithms with complexities.",
+            a: "<strong>Comparison Sorts:</strong><br>• <strong>Bubble Sort:</strong> O(n²) - Repeated swapping<br>• <strong>Selection Sort:</strong> O(n²) - Select minimum<br>• <strong>Insertion Sort:</strong> O(n²) - Insert in sorted part<br>• <strong>Merge Sort:</strong> O(n log n) - Divide & conquer<br>• <strong>Quick Sort:</strong> O(n log n) avg, O(n²) worst - Partition<br>• <strong>Heap Sort:</strong> O(n log n) - Using heap"
+        },
+        {
+            q: "What is Hashing? Explain collision resolution.",
+            a: "Hashing maps large data to smaller fixed-size values using hash function.<br><br><strong>Collision Resolution Techniques:</strong><br>1. <strong>Chaining:</strong> Each bucket maintains linked list<br>2. <strong>Open Addressing:</strong><br>   • Linear Probing: Check next slot<br>   • Quadratic Probing: Check i² slots away<br>   • Double Hashing: Use second hash function"
+        },
+        {
+            q: "Explain Recursion with examples.",
+            a: "Recursion is when a function calls itself to solve smaller subproblems.<br><br><strong>Components:</strong><br>• Base case: Stopping condition<br>• Recursive case: Function calls itself<br><br><strong>Examples:</strong><br>1. Factorial: n! = n × (n-1)!<br>2. Fibonacci: fib(n) = fib(n-1) + fib(n-2)"
+        },
+        {
+            q: "What is Dynamic Programming?",
+            a: "Dynamic Programming solves complex problems by breaking into overlapping subproblems and storing results.<br><br><strong>Properties:</strong><br>• Optimal Substructure<br>• Overlapping Subproblems<br><br><strong>Approaches:</strong><br>1. <strong>Top-Down (Memoization):</strong> Recursion + caching<br>2. <strong>Bottom-Up (Tabulation):</strong> Iterative table filling"
+        },
+        {
+            q: "Explain time and space complexity.",
+            a: "<strong>Time Complexity:</strong> Time taken vs input size<br>• O(1): Constant - Array access<br>• O(log n): Logarithmic - Binary search<br>• O(n): Linear - Linear search<br>• O(n log n): Linearithmic - Merge sort<br>• O(n²): Quadratic - Bubble sort<br><br><strong>Space Complexity:</strong> Memory used vs input size"
+        },
+        {
+            q: "What is a Heap? Explain Min-Heap and Max-Heap.",
+            a: "Heap is a complete binary tree with heap property.<br><br><strong>Types:</strong><br>• <strong>Min-Heap:</strong> Parent ≤ Children (Root is minimum)<br>• <strong>Max-Heap:</strong> Parent ≥ Children (Root is maximum)<br><br><strong>Operations (O(log n)):</strong><br>• Insert: Add at end, heapify up<br>• Delete: Replace with last, heapify down"
+        },
+        {
+            q: "Explain String algorithms.",
+            a: "<strong>Important String Algorithms:</strong><br>• <strong>KMP Algorithm:</strong> O(n+m) pattern matching<br>• <strong>Rabin-Karp:</strong> Rolling hash matching<br>• <strong>Z-Algorithm:</strong> Pattern preprocessing<br>• <strong>Manacher's Algorithm:</strong> Longest palindromic substring O(n)<br>• <strong>Trie:</strong> Prefix tree for dictionary"
+        },
+        {
+            q: "What is Greedy Algorithm? Give examples.",
+            a: "Greedy algorithm makes locally optimal choice at each step hoping for global optimum.<br><br><strong>Examples:</strong><br>• Activity Selection<br>• Fractional Knapsack<br>• Huffman Coding<br>• Dijkstra's Algorithm<br>• Prim's Algorithm<br>• Kruskal's Algorithm"
+        },
+        {
+            q: "Explain Backtracking with examples.",
+            a: "Backtracking builds solution incrementally and abandons paths that fail constraints.<br><br><strong>Examples:</strong><br>• N-Queens Problem<br>• Sudoku Solver<br>• Rat in a Maze<br>• Hamiltonian Cycle<br>• Subset Sum<br>• Graph Coloring"
+        },
+        {
+            q: "What is Divide and Conquer?",
+            a: "Divide and Conquer breaks problem into subproblems, solves them, and combines results.<br><br><strong>Steps:</strong><br>1. <strong>Divide:</strong> Break into smaller subproblems<br>2. <strong>Conquer:</strong> Solve subproblems recursively<br>3. <strong>Combine:</strong> Merge solutions<br><br><strong>Examples:</strong><br>• Merge Sort<br>• Quick Sort<br>• Binary Search"
+        },
+        {
+            q: "Explain AVL Tree and Rotations.",
+            a: "AVL Tree is self-balancing BST where height difference (balance factor) ≤ 1.<br><br><strong>Rotations (O(1)):</strong><br>1. <strong>LL Rotation:</strong> Right rotate (Left-Left case)<br>2. <strong>RR Rotation:</strong> Left rotate (Right-Right case)<br>3. <strong>LR Rotation:</strong> Left then right rotate (Left-Right)<br>4. <strong>RL Rotation:</strong> Right then left rotate (Right-Left)"
+        },
+        {
+            q: "What is Red-Black Tree?",
+            a: "Red-Black Tree is self-balancing BST with color property.<br><br><strong>Properties:</strong><br>1. Every node is red or black<br>2. Root is always black<br>3. No two adjacent red nodes<br>4. Same black nodes on all paths<br><br><strong>Advantages:</strong><br>• Guaranteed O(log n) operations<br>• Less rotations than AVL"
+        },
+        {
+            q: "Explain Trie data structure.",
+            a: "Trie (Prefix Tree) is tree-like structure for storing strings.<br><br><strong>Characteristics:</strong><br>• Each node represents a character<br>• Root represents empty string<br>• Path from root forms words<br><br><strong>Applications:</strong><br>• Autocomplete<br>• Spell checker<br>• IP routing"
+        },
+        {
+            q: "What is Segment Tree?",
+            a: "Segment Tree handles range queries and updates on arrays.<br><br><strong>Operations:</strong><br>• Build: O(n)<br>• Query: O(log n)<br>• Update: O(log n)<br><br><strong>Applications:</strong><br>• Range sum queries<br>• Range minimum queries<br>• Lazy propagation"
+        },
+        {
+            q: "Explain Disjoint Set Union (Union-Find).",
+            a: "DSU maintains collection of disjoint sets with union and find operations.<br><br><strong>Operations:</strong><br>• <strong>Find:</strong> Find representative of set (Path compression)<br>• <strong>Union:</strong> Merge two sets (Union by rank/size)<br><br><strong>Applications:</strong><br>• Kruskal's algorithm<br>• Connected components<br>• Cycle detection"
+        },
+        {
+            q: "What is Topological Sorting?",
+            a: "Topological sorting linear ordering of vertices in DAG where u comes before v for every edge u→v.<br><br><strong>Algorithms:</strong><br>1. <strong>DFS-based:</strong> Add to stack after processing<br>2. <strong>Kahn's Algorithm:</strong> Remove nodes with in-degree 0<br><br><strong>Time:</strong> O(V+E)"
+        },
+        {
+            q: "Explain Shortest Path Algorithms.",
+            a: "<strong>Shortest Path Algorithms:</strong><br><br>1. <strong>Dijkstra's Algorithm:</strong><br>   • Greedy, works for non-negative weights<br>   • O((V+E) log V) with heap<br><br>2. <strong>Bellman-Ford:</strong><br>   • Works for negative weights<br>   • Detects negative cycles<br>   • O(VE)<br><br>3. <strong>Floyd-Warshall:</strong><br>   • All pairs shortest path<br>   • O(V³)"
+        },
+        {
+            q: "What is Minimum Spanning Tree?",
+            a: "MST connects all vertices with minimum total edge weight without cycles.<br><br><strong>Algorithms:</strong><br><br>1. <strong>Kruskal's Algorithm:</strong><br>   • Sort edges, add smallest if no cycle (using DSU)<br>   • O(E log E)<br><br>2. <strong>Prim's Algorithm:</strong><br>   • Grow MST from a vertex<br>   • O((V+E) log V) with heap"
+        },
+        {
+            q: "Explain Bit Manipulation techniques.",
+            a: "<strong>Important Bit Operations:</strong><br><br>• <strong>Get ith bit:</strong> (n >> i) & 1<br>• <strong>Set ith bit:</strong> n | (1 << i)<br>• <strong>Clear ith bit:</strong> n & ~(1 << i)<br>• <strong>Toggle ith bit:</strong> n ^ (1 << i)<br><br><strong>Common Problems:</strong><br>• Check if power of 2: n & (n-1) == 0<br>• Count set bits: Brian Kernighan's algorithm<br>• Find unique element: XOR array"
+        }
+    ],
+
+    // Python - 30 Questions
+    python: [
+        {
+            q: "What is Python? Explain its features.",
+            a: "Python is a high-level, interpreted programming language known for simplicity and readability.<br><br><strong>Key Features:</strong><br>• <strong>Interpreted:</strong> No compilation needed<br>• <strong>Dynamically Typed:</strong> No variable type declaration<br>• <strong>Object-Oriented:</strong> Supports classes and objects<br>• <strong>Garbage Collection:</strong> Automatic memory management<br>• <strong>Extensive Libraries:</strong> Rich standard library"
+        },
+        {
+            q: "What are the data types in Python?",
+            a: "<strong>Python has following data types:</strong><br><br>📌 <strong>Numeric Types:</strong> int, float, complex<br>📌 <strong>Sequence Types:</strong> str, list, tuple<br>📌 <strong>Mapping Type:</strong> dict<br>📌 <strong>Set Types:</strong> set, frozenset<br>📌 <strong>Boolean Type:</strong> bool<br>📌 <strong>None Type:</strong> NoneType"
+        },
+        {
+            q: "Explain Lists in Python.",
+            a: "List is a mutable, ordered collection that can hold heterogeneous elements.<br><br><strong>Common Operations:</strong><br>• Access: O(1)<br>• Append: O(1)<br>• Insert: O(n)<br>• Remove: O(n)<br>• Pop: O(1)<br><br><strong>List Comprehension:</strong><br>[x**2 for x in range(10) if x%2==0]"
+        },
+        {
+            q: "Explain Tuples vs Lists.",
+            a: "<strong>Differences between Tuples and Lists:</strong><br><br>• <strong>Mutability:</strong> List mutable, Tuple immutable<br>• <strong>Syntax:</strong> List [], Tuple ()<br>• <strong>Performance:</strong> Tuple faster<br>• <strong>Memory:</strong> Tuple uses less memory<br>• <strong>Methods:</strong> List has many methods, Tuple only count() and index()"
+        },
+        {
+            q: "What are Dictionaries in Python?",
+            a: "Dictionary is an unordered, mutable collection of key-value pairs.<br><br><strong>Operations:</strong><br>• Access: O(1)<br>• Add/Update: O(1)<br>• Delete: O(1)<br><br><strong>Methods:</strong><br>• keys(): Get all keys<br>• values(): Get all values<br>• items(): Get key-value pairs<br>• get(): Safe access with default"
+        },
+        {
+            q: "Explain Sets in Python.",
+            a: "Set is an unordered collection of unique, immutable objects.<br><br><strong>Operations:</strong><br>• Add: O(1)<br>• Remove: O(1)<br>• Union: set1 | set2<br>• Intersection: set1 & set2<br>• Difference: set1 - set2<br><br><strong>Use Cases:</strong><br>• Removing duplicates<br>• Membership testing (O(1))"
+        },
+        {
+            q: "What is String in Python? Explain methods.",
+            a: "String is an immutable sequence of characters enclosed in quotes.<br><br><strong>Common String Methods:</strong><br>• lower()/upper(): Case conversion<br>• strip(): Remove whitespace<br>• split(): Split into list<br>• join(): Join list into string<br>• replace(): Replace substring<br>• find()/index(): Find substring"
+        },
+        {
+            q: "Explain control flow statements in Python.",
+            a: "<strong>Conditional Statements:</strong><br>if condition:<br>    # code<br>elif condition:<br>    # code<br>else:<br>    # code<br><br><strong>Loops:</strong><br>for item in iterable:<br>    # code<br><br>while condition:<br>    # code<br><br><strong>Loop Control:</strong> break, continue, pass"
+        },
+        {
+            q: "What are Functions in Python?",
+            a: "Function is a reusable block of code that performs a specific task.<br><br><strong>Types of Arguments:</strong><br>1. <strong>Positional:</strong> def add(a, b)<br>2. <strong>Keyword:</strong> add(b=5, a=3)<br>3. <strong>Default:</strong> def power(base, exp=2)<br>4. <strong>Variable-length:</strong> *args, **kwargs"
+        },
+        {
+            q: "Explain *args and **kwargs.",
+            a: "<strong>*args (Non-Keyword Arguments):</strong><br>• Allows variable number of positional arguments<br>• Args are accessible as tuple<br><br><strong>**kwargs (Keyword Arguments):</strong><br>• Allows variable number of keyword arguments<br>• Kwargs are accessible as dictionary"
+        },
+        {
+            q: "What is Object-Oriented Programming in Python?",
+            a: "OOP is a programming paradigm based on objects containing data and methods.<br><br><strong>Key Concepts:</strong><br>1. <strong>Class:</strong> Blueprint for creating objects<br>2. <strong>Object:</strong> Instance of a class<br>3. <strong>Inheritance:</strong> Child class inherits from parent<br>4. <strong>Encapsulation:</strong> Hiding internal details<br>5. <strong>Polymorphism:</strong> Same interface different implementations"
+        },
+        {
+            q: "Explain __init__ method and self parameter.",
+            a: "<strong>__init__ Method:</strong><br>• Constructor method called when object is created<br>• Initializes object attributes<br><br><strong>self Parameter:</strong><br>• Reference to current instance of class<br>• Must be first parameter of instance methods<br>• Used to access instance attributes"
+        },
+        {
+            q: "Explain Inheritance in Python.",
+            a: "<strong>Types of Inheritance:</strong><br><br>1. <strong>Single Inheritance:</strong> class Child(Parent)<br>2. <strong>Multiple Inheritance:</strong> class Child(Parent1, Parent2)<br>3. <strong>Multilevel Inheritance:</strong> class Grandchild(Child)<br>4. <strong>Hierarchical:</strong> One parent multiple children<br>5. <strong>Hybrid:</strong> Combination"
+        },
+        {
+            q: "What is Polymorphism?",
+            a: "Polymorphism means same method name having different implementations.<br><br><strong>Types:</strong><br>1. <strong>Method Overriding (Runtime):</strong> Child class redefines parent method<br>2. <strong>Operator Overloading:</strong> def __add__(self, other)<br><br><strong>Duck Typing:</strong> \"If it walks like a duck and quacks like a duck, it's a duck\""
+        },
+        {
+            q: "Explain Encapsulation and Access Modifiers.",
+            a: "<strong>Access Modifiers in Python:</strong><br><br>1. <strong>Public:</strong> self.name<br>2. <strong>Protected (_):</strong> self._age (convention only)<br>3. <strong>Private (__):</strong> self.__salary (name mangling)<br><br><strong>Property Decorators:</strong><br>@property, @name.setter"
+        },
+        {
+            q: "What are Decorators in Python?",
+            a: "Decorators modify or enhance functions without changing their source code.<br><br><strong>Syntax:</strong><br>@decorator_name<br>def function():<br>    pass<br><br><strong>Built-in Decorators:</strong><br>• @staticmethod<br>• @classmethod<br>• @property"
+        },
+        {
+            q: "Explain Generators and yield keyword.",
+            a: "Generators produce values lazily, one at a time, saving memory.<br><br><strong>Example:</strong><br>def count_up_to(n):<br>    i = 1<br>    while i <= n:<br>        yield i<br>        i += 1<br><br><strong>Benefits:</strong><br>• Memory efficient<br>• Lazy evaluation<br>• Can represent infinite sequences"
+        },
+        {
+            q: "What are List Comprehensions?",
+            a: "List comprehension provides concise way to create lists.<br><br><strong>Syntax:</strong><br>[expression for item in iterable if condition]<br><br><strong>Examples:</strong><br>squares = [x**2 for x in range(10)]<br>evens = [x for x in range(20) if x % 2 == 0]"
+        },
+        {
+            q: "Explain Exception Handling in Python.",
+            a: "<strong>Try-Except Block:</strong><br>try:<br>    # Code that may raise exception<br>except ValueError:<br>    # Handle specific exception<br>except Exception as e:<br>    # Handle any exception<br>else:<br>    # Executes if no exception<br>finally:<br>    # Always executes"
+        },
+        {
+            q: "What is File Handling in Python?",
+            a: "<strong>File Modes:</strong><br>• 'r': Read (default)<br>• 'w': Write (overwrite)<br>• 'a': Append<br>• 'x': Exclusive creation<br>• 'b': Binary mode<br>• 't': Text mode<br><br><strong>With Statement:</strong><br>with open('file.txt', 'r') as f:<br>    content = f.read()"
+        },
+        {
+            q: "Explain Modules and Packages.",
+            a: "<strong>Module:</strong> Python file containing functions, classes, variables.<br><strong>Package:</strong> Directory containing multiple modules with __init__.py<br><br><strong>Import:</strong><br>import module<br>from module import function<br>import module as alias"
+        },
+        {
+            q: "What is PIP?",
+            a: "PIP is Python's package installer.<br><br><strong>Common Commands:</strong><br>• pip install package_name<br>• pip uninstall package_name<br>• pip list<br>• pip freeze > requirements.txt<br>• pip install -r requirements.txt"
+        },
+        {
+            q: "Explain Virtual Environments.",
+            a: "Virtual environment creates isolated Python environment for projects.<br><br><strong>Creating:</strong> python -m venv myenv<br><strong>Activate (Windows):</strong> myenv\\Scripts\\activate<br><strong>Activate (Mac/Linux):</strong> source myenv/bin/activate<br><strong>Deactivate:</strong> deactivate"
+        },
+        {
+            q: "What are Lambda Functions?",
+            a: "Lambda functions are anonymous, single-expression functions.<br><br><strong>Syntax:</strong> lambda arguments: expression<br><br><strong>Example:</strong><br>square = lambda x: x**2<br>print(square(5))  # 25"
+        },
+        {
+            q: "Explain Map, Filter, Reduce.",
+            a: "<strong>map() - Apply function to all items:</strong><br>map(lambda x: x**2, numbers)<br><br><strong>filter() - Filter items based on condition:</strong><br>filter(lambda x: x%2==0, numbers)<br><br><strong>reduce() - Cumulative operation:</strong><br>from functools import reduce<br>reduce(lambda x, y: x + y, numbers)"
+        },
+        {
+            q: "What is GIL (Global Interpreter Lock)?",
+            a: "GIL is a mutex that protects access to Python objects, preventing multiple threads from executing Python bytecode simultaneously.<br><br><strong>Impact:</strong><br>• CPU-bound tasks: No benefit from multithreading<br>• I/O-bound tasks: Good for multithreading<br><br><strong>Workarounds:</strong><br>• Use multiprocessing<br>• Use asyncio<br>• Use Jython/IronPython"
+        },
+        {
+            q: "Explain Multithreading vs Multiprocessing.",
+            a: "<strong>Multithreading:</strong><br>• Multiple threads in same process<br>• Share memory<br>• Lightweight<br>• Affected by GIL<br>• Good for I/O-bound tasks<br><br><strong>Multiprocessing:</strong><br>• Multiple processes<br>• Separate memory<br>• Heavier<br>• Bypasses GIL<br>• Good for CPU-bound tasks"
+        },
+        {
+            q: "What are Context Managers?",
+            a: "Context managers manage resources using with statement.<br><br><strong>Class-based:</strong><br>class FileManager:<br>    def __enter__(self):<br>        return self.file<br>    def __exit__(self, exc_type, exc_val, exc_tb):<br>        self.file.close()<br><br><strong>Using contextlib:</strong><br>@contextmanager<br>def file_manager(filename):<br>    f = open(filename)<br>    yield f<br>    f.close()"
+        },
+        {
+            q: "Explain Regular Expressions in Python.",
+            a: "Regular expressions (regex) are patterns for string matching.<br><br><strong>Common Patterns:</strong><br>• . : Any character<br>• \\d : Digit<br>• \\w : Word character<br>• \\s : Whitespace<br>• ^ : Start of string<br>• $ : End of string<br><br><strong>Functions:</strong><br>re.search(), re.findall(), re.sub()"
+        },
+        {
+            q: "What is Django? Explain its architecture.",
+            a: "Django is high-level Python web framework following MVT pattern.<br><br><strong>MVT Architecture:</strong><br>1. <strong>Model:</strong> Database layer<br>2. <strong>View:</strong> Business logic<br>3. <strong>Template:</strong> Presentation layer<br><br><strong>Key Features:</strong><br>• ORM<br>• Admin interface<br>• Authentication<br>• URL routing<br>• Template engine"
+        }
+    ],
+
+    // DBMS - 30 Questions (abbreviated for space, but will include in actual code)
+    dbms: [
+        {
+            q: "What is DBMS? Explain its advantages.",
+            a: "Database Management System (DBMS) is software for storing, retrieving, and managing data.<br><br><strong>Advantages:</strong><br>• <strong>Data Redundancy Control:</strong> Minimizes duplicate data<br>• <strong>Data Consistency:</strong> Ensures data accuracy<br>• <strong>Data Security:</strong> Access control mechanisms<br>• <strong>Data Integrity:</strong> Maintains data accuracy and consistency<br>• <strong>Concurrent Access:</strong> Multiple users access simultaneously<br>• <strong>Backup & Recovery:</strong> Protects against data loss<br>• <strong>Data Independence:</strong> Changes don't affect applications"
+        },
+        {
+            q: "Explain different types of DBMS.",
+            a: "<strong>Types of DBMS:</strong><br><br>1. <strong>Hierarchical DBMS:</strong><br>   • Tree-like structure<br>   • Parent-child relationship<br>   • Example: IBM IMS<br><br>2. <strong>Network DBMS:</strong><br>   • Many-to-many relationships<br>   • Uses pointers<br>   • Example: IDS<br><br>3. <strong>Relational DBMS (RDBMS):</strong><br>   • Tables with rows and columns<br>   • Uses SQL<br>   • Example: MySQL, Oracle, PostgreSQL<br><br>4. <strong>Object-Oriented DBMS:</strong><br>   • Stores objects<br>   • Example: db4o<br><br>5. <strong>NoSQL DBMS:</strong><br>   • Non-relational<br>   • Types: Document (MongoDB), Key-Value (Redis), Column (Cassandra), Graph (Neo4j)"
+        },
+        {
+            q: "What is RDBMS? Explain its features.",
+            a: "Relational Database Management System organizes data in tables with relationships.<br><br><strong>Key Features:</strong><br><br>1. <strong>Tables:</strong> Data stored in rows and columns<br><br>2. <strong>Primary Key:</strong> Unique identifier for each row<br><br>3. <strong>Foreign Key:</strong> Links tables together<br><br>4. <strong>Indexes:</strong> Faster data retrieval<br><br>5. <strong>ACID Properties:</strong> Ensures reliable transactions<br><br>6. <strong>SQL:</strong> Standard query language<br><br>7. <strong>Normalization:</strong> Eliminates redundancy<br><br><strong>Examples:</strong> MySQL, PostgreSQL, Oracle, SQL Server, SQLite"
+        },
+        {
+            q: "Explain SQL and its types.",
+            a: "SQL (Structured Query Language) is used to communicate with databases.<br><br><strong>SQL Commands Types:</strong><br><br>1. <strong>DDL (Data Definition Language):</strong><br>   • CREATE: Create database objects<br>   • ALTER: Modify structure<br>   • DROP: Delete objects<br>   • TRUNCATE: Remove all records<br>   • RENAME: Rename objects<br><br>2. <strong>DML (Data Manipulation Language):</strong><br>   • SELECT: Retrieve data<br>   • INSERT: Add new records<br>   • UPDATE: Modify records<br>   • DELETE: Remove records<br><br>3. <strong>DCL (Data Control Language):</strong><br>   • GRANT: Give permissions<br>   • REVOKE: Remove permissions<br><br>4. <strong>TCL (Transaction Control Language):</strong><br>   • COMMIT: Save transactions<br>   • ROLLBACK: Undo transactions<br>   • SAVEPOINT: Set savepoints"
+        },
+        {
+            q: "What is a Primary Key?",
+            a: "Primary Key uniquely identifies each record in a table.<br><br><strong>Characteristics:</strong><br>• Unique values (no duplicates)<br>• Cannot be NULL<br>• Only one per table<br>• Automatically indexed<br><br><strong>Example:</strong><br>CREATE TABLE Student (<br>    student_id INT PRIMARY KEY,<br>    name VARCHAR(50),<br>    age INT<br>);<br><br>INSERT INTO Student VALUES (1, 'John', 20);<br>INSERT INTO Student VALUES (2, 'Alice', 22);<br><br><strong>Composite Primary Key:</strong><br>CREATE TABLE Enrollment (<br>    student_id INT,<br>    course_id INT,<br>    enrollment_date DATE,<br>    PRIMARY KEY (student_id, course_id)<br>);"
+        },
+        {
+            q: "Explain Foreign Key.",
+            a: "Foreign Key establishes relationship between two tables.<br><br><strong>Characteristics:</strong><br>• References Primary Key of another table<br>• Can have duplicate values<br>• Can be NULL<br>• Maintains referential integrity<br><br><strong>Example:</strong><br>CREATE TABLE Student (<br>    student_id INT PRIMARY KEY,<br>    name VARCHAR(50)<br>);<br><br>CREATE TABLE Course (<br>    course_id INT PRIMARY KEY,<br>    student_id INT,<br>    course_name VARCHAR(50),<br>    FOREIGN KEY (student_id) REFERENCES Student(student_id)<br>);<br><br><strong>Referential Actions:</strong><br>• CASCADE: Delete/update related records<br>• SET NULL: Set foreign key to NULL<br>• RESTRICT: Prevent deletion<br>• NO ACTION: Check after operation"
+        },
+        {
+            q: "What are different keys in DBMS?",
+            a: "<strong>Types of Keys:</strong><br><br>1. <strong>Primary Key:</strong> Unique identifier, NOT NULL<br><br>2. <strong>Foreign Key:</strong> References another table's primary key<br><br>3. <strong>Candidate Key:</strong> Minimal super key, potential primary key<br><br>4. <strong>Super Key:</strong> Set of attributes identifying rows uniquely<br><br>5. <strong>Alternate Key:</strong> Candidate keys not chosen as primary<br><br>6. <strong>Composite Key:</strong> Combination of columns forming primary key<br><br>7. <strong>Unique Key:</strong> Unique values, allows NULL (one NULL allowed)<br><br>8. <strong>Secondary Key:</strong> Used for indexing/searching<br><br><strong>Example:</strong><br>Student(StudentID, RollNo, Email, Name, CourseID)<br>• Primary Key: StudentID<br>• Candidate Keys: RollNo, Email<br>• Alternate Keys: RollNo, Email (if StudentID is primary)<br>• Foreign Key: CourseID"
+        },
+        {
+            q: "Explain Normalization and its types.",
+            a: "Normalization organizes data to reduce redundancy and improve integrity.<br><br><strong>Normal Forms:</strong><br><br>1. <strong>1NF (First Normal Form):</strong><br>   • Atomic values (no repeating groups)<br>   • Single value per cell<br><br>2. <strong>2NF (Second Normal Form):</strong><br>   • In 1NF<br>   • No partial dependency (all non-key attributes depend on full primary key)<br><br>3. <strong>3NF (Third Normal Form):</strong><br>   • In 2NF<br>   • No transitive dependency (non-key attributes don't depend on other non-key attributes)<br><br>4. <strong>BCNF (Boyce-Codd Normal Form):</strong><br>   • In 3NF<br>   • Every determinant is a candidate key<br><br>5. <strong>4NF (Fourth Normal Form):</strong><br>   • In BCNF<br>   • No multi-valued dependencies<br><br>6. <strong>5NF (Fifth Normal Form):</strong><br>   • In 4NF<br>   • No join dependencies"
+        },
+        {
+            q: "What is Denormalization?",
+            a: "Denormalization adds redundancy to improve query performance.<br><br><strong>Characteristics:</strong><br>• Opposite of normalization<br>• Combines tables<br>• Adds redundant data<br>• Improves read performance<br>• Increases write overhead<br><br><strong>Techniques:</strong><br>1. Pre-joining tables<br>2. Storing derived/calculated values<br>3. Adding redundant columns<br>4. Maintaining summary tables<br><br><strong>Example:</strong><br>Normalized: Orders table + Customers table<br>Denormalized: Orders table with customer_name, customer_address included<br><br><strong>When to use:</strong><br>• Read-heavy applications<br>• Reporting/Analytics<br>• Data warehousing<br>• Performance critical queries"
+        },
+        {
+            q: "Explain ACID properties.",
+            a: "ACID ensures reliable database transactions.<br><br><strong>A - Atomicity:</strong><br>• Transaction executes completely or not at all<br>• All-or-nothing operation<br>• Example: Money transfer - both debit and credit complete<br><br><strong>C - Consistency:</strong><br>• Data remains valid after transaction<br>• All constraints maintained<br>• Example: Account balance never negative<br><br><strong>I - Isolation:</strong><br>• Concurrent transactions don't interfere<br>• Each transaction runs independently<br>• Example: Two withdrawals from same account<br><br><strong>D - Durability:</strong><br>• Committed changes persist<br>• Survives system failures<br>• Example: After power failure, data remains"
+        },
+        {
+            q: "What are different types of JOINs?",
+            a: "JOINs combine rows from multiple tables based on related columns.<br><br><strong>Types:</strong><br><br>1. <strong>INNER JOIN:</strong> Matching rows from both tables<br>   SELECT * FROM A INNER JOIN B ON A.id = B.id<br><br>2. <strong>LEFT JOIN (LEFT OUTER):</strong> All rows from left, matching from right<br>   SELECT * FROM A LEFT JOIN B ON A.id = B.id<br><br>3. <strong>RIGHT JOIN (RIGHT OUTER):</strong> All rows from right, matching from left<br>   SELECT * FROM A RIGHT JOIN B ON A.id = B.id<br><br>4. <strong>FULL OUTER JOIN:</strong> All rows from both tables<br>   SELECT * FROM A FULL OUTER JOIN B ON A.id = B.id<br><br>5. <strong>CROSS JOIN:</strong> Cartesian product<br>   SELECT * FROM A CROSS JOIN B<br><br>6. <strong>SELF JOIN:</strong> Table joined with itself<br>   SELECT * FROM Employee e1 JOIN Employee e2 ON e1.manager_id = e2.id"
+        },
+        {
+            q: "Explain Indexes in DBMS.",
+            a: "Indexes speed up data retrieval operations.<br><br><strong>Types:</strong><br><br>1. <strong>Clustered Index:</strong><br>   • Determines physical order of data<br>   • Only one per table<br>   • Faster for range queries<br>   • Example: Primary key<br><br>2. <strong>Non-Clustered Index:</strong><br>   • Separate structure with pointers<br>   • Multiple per table<br>   • Requires additional space<br>   • Example: Index on frequently searched columns<br><br>3. <strong>Unique Index:</strong><br>   • Ensures unique values<br>   • Automatically created for primary key<br><br>4. <strong>Composite Index:</strong><br>   • Multiple columns<br>   • Order matters<br><br><strong>Trade-offs:</strong><br>• Faster SELECT, slower INSERT/UPDATE/DELETE<br>• Uses additional storage"
+        },
+        {
+            q: "What is a View in SQL?",
+            a: "View is a virtual table based on SELECT query result.<br><br><strong>Creating View:</strong><br>CREATE VIEW student_view AS<br>SELECT student_id, name, age<br>FROM student<br>WHERE age > 18;<br><br><strong>Using View:</strong><br>SELECT * FROM student_view;<br><br><strong>Types:</strong><br>1. <strong>Simple View:</strong> Single table, no functions<br>2. <strong>Complex View:</strong> Multiple tables, functions, grouping<br>3. <strong>Materialized View:</strong> Physically stored, periodically refreshed<br><br><strong>Advantages:</strong><br>• Security (hide sensitive columns)<br>• Simplify complex queries<br>• Data abstraction<br>• Consistency<br><br><strong>Limitations:</strong><br>• Performance overhead<br>• Update restrictions"
+        },
+        {
+            q: "Explain Stored Procedures.",
+            a: "Stored procedures are prepared SQL code saved and reused.<br><br><strong>Creating Procedure:</strong><br>DELIMITER //<br>CREATE PROCEDURE GetStudents(IN dept VARCHAR(50))<br>BEGIN<br>    SELECT * FROM student WHERE department = dept;<br>END //<br>DELIMITER ;<br><br><strong>Calling Procedure:</strong><br>CALL GetStudents('CS');<br><br><strong>Advantages:</strong><br>• Reusability<br>• Performance (compiled once)<br>• Security (users can execute without table access)<br>• Reduced network traffic<br>• Maintainability<br><br><strong>vs Functions:</strong><br>• Procedures may not return values<br>• Procedures can have multiple OUT parameters<br>• Procedures can call functions"
+        },
+        {
+            q: "What are Triggers?",
+            a: "Trigger automatically executes in response to database events.<br><br><strong>Creating Trigger:</strong><br>CREATE TRIGGER update_timestamp<br>BEFORE UPDATE ON student<br>FOR EACH ROW<br>SET NEW.updated_at = NOW();<br><br><strong>Trigger Events:</strong><br>• INSERT<br>• UPDATE<br>• DELETE<br><br><strong>Trigger Timing:</strong><br>• BEFORE: Execute before event<br>• AFTER: Execute after event<br><br><strong>Uses:</strong><br>• Audit logging<br>• Data validation<br>• Enforcing business rules<br>• Maintaining derived data<br>• Referential integrity<br><br><strong>Limitations:</strong><br>• Performance overhead<br>• Debugging difficulty<br>• Can cause cascading effects"
+        },
+        {
+            q: "Explain Transactions in DBMS.",
+            a: "Transaction is a unit of work performed against database.<br><br><strong>Transaction States:</strong><br>• Active<br>• Partially Committed<br>• Committed<br>• Failed<br>• Aborted<br>• Terminated<br><br><strong>Transaction Operations:</strong><br>BEGIN TRANSACTION<br>-- SQL statements<br>UPDATE account SET balance = balance - 100 WHERE id = 1;<br>UPDATE account SET balance = balance + 100 WHERE id = 2;<br>COMMIT;  -- or ROLLBACK;<br><br><strong>Properties (ACID):</strong><br>• Atomicity<br>• Consistency<br>• Isolation<br>• Durability<br><br><strong>Concurrency Problems:</strong><br>• Dirty Read<br>• Non-repeatable Read<br>• Phantom Read<br>• Lost Update"
+        },
+        {
+            q: "What are different transaction isolation levels?",
+            a: "Isolation levels determine how transaction changes are visible.<br><br><strong>Isolation Levels (ANSI):</strong><br><br>1. <strong>READ UNCOMMITTED:</strong><br>   • Can read uncommitted changes (dirty reads)<br>   • Lowest isolation<br>   • All concurrency issues possible<br><br>2. <strong>READ COMMITTED:</strong><br>   • Only committed data<br>   • Prevents dirty reads<br>   • Non-repeatable reads possible<br><br>3. <strong>REPEATABLE READ:</strong><br>   • Same data read consistently<br>   • Prevents dirty and non-repeatable reads<br>   • Phantom reads possible<br><br>4. <strong>SERIALIZABLE:</strong><br>   • Highest isolation<br>   • Transactions execute serially<br>   • Prevents all concurrency issues<br>   • Lowest performance<br><br><strong>Syntax:</strong><br>SET TRANSACTION ISOLATION LEVEL READ COMMITTED;"
+        },
+        {
+            q: "Explain Deadlock in DBMS.",
+            a: "Deadlock occurs when transactions wait for each other indefinitely.<br><br><strong>Example:</strong><br>T1: Lock A, waiting for B<br>T2: Lock B, waiting for A<br><br><strong>Deadlock Prevention:</strong><br>1. <strong>Wait-Die:</strong> Older transaction waits, younger dies<br>2. <strong>Wound-Wait:</strong> Older preempts younger<br>3. <strong>Lock ordering:</strong> All transactions lock in same order<br>4. <strong>Timeouts:</strong> Transaction fails after waiting<br><br><strong>Deadlock Detection:</strong><br>• Wait-for graph<br>• Cycle detection<br><br><strong>Deadlock Resolution:</strong><br>• Choose victim transaction<br>• Rollback victim<br>• Restart victim later"
+        },
+        {
+            q: "What is Concurrency Control?",
+            a: "Concurrency control manages simultaneous transactions to maintain consistency.<br><br><strong>Problems Without Control:</strong><br>• Lost Update<br>• Dirty Read<br>• Non-repeatable Read<br>• Phantom Read<br><br><strong>Concurrency Control Protocols:</strong><br><br>1. <strong>Lock-Based Protocol:</strong><br>   • Shared Lock (S): Read only<br>   • Exclusive Lock (X): Read and write<br>   • Two-Phase Locking (2PL)<br><br>2. <strong>Timestamp-Based Protocol:</strong><br>   • Assign timestamps to transactions<br>   • Ensure serializability<br><br>3. <strong>Optimistic Protocols:</strong><br>   • Validation phase<br>   • Less locking overhead<br><br>4. <strong>Multiversion Concurrency Control (MVCC):</strong><br>   • Maintain multiple versions<br>   • Readers don't block writers"
+        },
+        {
+            q: "Explain Two-Phase Locking (2PL).",
+            a: "2PL ensures serializability in concurrent transactions.<br><br><strong>Phases:</strong><br><br>1. <strong>Growing Phase:</strong><br>   • Acquire locks<br>   • Cannot release locks<br>   • All lock operations<br><br>2. <strong>Shrinking Phase:</strong><br>   • Release locks<br>   • Cannot acquire new locks<br>   • After first unlock<br><br><strong>Types:</strong><br>• <strong>Basic 2PL:</strong> All locks in growing phase<br>• <strong>Strict 2PL:</strong> Hold exclusive locks until commit<br>• <strong>Rigorous 2PL:</strong> Hold all locks until commit<br><br><strong>Advantages:</strong><br>• Guarantees serializability<br>• Simple to implement<br><br><strong>Disadvantages:</strong><br>• May cause deadlocks<br>• Cascading rollbacks possible"
+        },
+        {
+            q: "What is Data Warehouse?",
+            a: "Data warehouse is centralized repository for analysis and reporting.<br><br><strong>Characteristics:</strong><br>• Subject-oriented<br>• Integrated<br>• Time-variant (historical)<br>• Non-volatile (read-only)<br><br><strong>Architecture:</strong><br>1. <strong>Data Sources:</strong> OLTP systems, files<br>2. <strong>ETL Process:</strong> Extract, Transform, Load<br>3. <strong>Data Storage:</strong> Fact and dimension tables<br>4. <strong>OLAP Cubes:</strong> Multi-dimensional analysis<br>5. <strong>Presentation:</strong> Reports, dashboards<br><br><strong>vs Database:</strong><br>• Database: OLTP, current data, normalized<br>• Warehouse: OLAP, historical data, denormalized"
+        },
+        {
+            q: "Explain ETL Process.",
+            a: "ETL (Extract, Transform, Load) moves data from sources to warehouse.<br><br><strong>E - Extract:</strong><br>• Read from source systems<br>• Databases, files, APIs<br>• Incremental or full extract<br><br><strong>T - Transform:</strong><br>• Clean data (handle NULLs, duplicates)<br>• Validate data<br>• Apply business rules<br>• Convert data types<br>• Join data from multiple sources<br>• Aggregate data<br>• Enrich with additional data<br><br><strong>L - Load:</strong><br>• Insert into warehouse<br>• Update dimensions<br>• Populate fact tables<br>• Build indexes<br>• Update metadata<br><br><strong>ETL Tools:</strong> Informatica, Talend, SSIS, Apache NiFi"
+        },
+        {
+            q: "What is OLAP?",
+            a: "OLAP (Online Analytical Processing) enables multi-dimensional analysis.<br><br><strong>OLAP Operations:</strong><br><br>1. <strong>Roll-up:</strong> Aggregate data (drill-up)<br>   • Daily → Monthly → Yearly<br><br>2. <strong>Drill-down:</strong> Detail data<br>   • Yearly → Quarterly → Monthly<br><br>3. <strong>Slice:</strong> Filter one dimension<br>   • Sales for 2023 only<br><br>4. <strong>Dice:</strong> Filter multiple dimensions<br>   • Sales for 2023, Product A, Region North<br><br>5. <strong>Pivot (Rotation):</strong> Reorient view<br><br><strong>OLAP Types:</strong><br>• MOLAP: Multidimensional OLAP<br>• ROLAP: Relational OLAP<br>• HOLAP: Hybrid OLAP"
+        },
+        {
+            q: "Explain NoSQL Databases.",
+            a: "NoSQL databases handle large-scale, unstructured data.<br><br><strong>Types:</strong><br><br>1. <strong>Document Stores:</strong><br>   • JSON/BSON documents<br>   • Example: MongoDB, CouchDB<br><br>2. <strong>Key-Value Stores:</strong><br>   • Simple key-value pairs<br>   • Example: Redis, DynamoDB<br><br>3. <strong>Column-Family Stores:</strong><br>   • Columns grouped into families<br>   • Example: Cassandra, HBase<br><br>4. <strong>Graph Databases:</strong><br>   • Nodes and edges<br>   • Example: Neo4j, Amazon Neptune<br><br><strong>CAP Theorem:</strong><br>• Consistency<br>• Availability<br>• Partition Tolerance<br>• Choose any two"
+        },
+        {
+            q: "What is Database Sharding?",
+            a: "Sharding horizontally partitions data across multiple databases.<br><br><strong>Sharding Strategies:</strong><br><br>1. <strong>Key-Based Sharding:</strong><br>   • Hash of shard key<br>   • Even distribution<br>   • Example: user_id % 4<br><br>2. <strong>Range-Based Sharding:</strong><br>   • Data ranges per shard<br>   • Example: A-M in shard1, N-Z in shard2<br><br>3. <strong>Directory-Based Sharding:</strong><br>   • Lookup table for mapping<br>   • Flexible but single point<br><br><strong>Advantages:</strong><br>• Scalability<br>• Performance<br>• Fault isolation<br><br><strong>Challenges:</strong><br>• Complex queries across shards<br>• Rebalancing<br>• Joins difficult"
+        },
+        {
+            q: "Explain Database Replication.",
+            a: "Replication copies data to multiple servers for availability.<br><br><strong>Types:</strong><br><br>1. <strong>Master-Slave Replication:</strong><br>   • One master for writes<br>   • Multiple slaves for reads<br>   • Asynchronous replication<br><br>2. <strong>Master-Master Replication:</strong><br>   • Multiple masters accept writes<br>   • Conflict resolution needed<br><br>3. <strong>Synchronous Replication:</strong><br>   • All nodes updated before commit<br>   • Consistency, but slower<br><br>4. <strong>Asynchronous Replication:</strong><br>   • Master commits, then replicates<br>   • Faster, but eventual consistency<br><br><strong>Benefits:</strong><br>• High availability<br>• Load balancing<br>• Disaster recovery<br>• Geographic distribution"
+        },
+        {
+            q: "What is a Cursor in SQL?",
+            a: "Cursor processes query results row by row.<br><br><strong>Cursor Operations:</strong><br>1. DECLARE CURSOR<br>2. OPEN CURSOR<br>3. FETCH row<br>4. Process row<br>5. CLOSE CURSOR<br>6. DEALLOCATE CURSOR<br><br><strong>Example:</strong><br>DECLARE cur CURSOR FOR<br>SELECT name, age FROM student WHERE age > 18;<br><br>OPEN cur;<br>FETCH NEXT FROM cur INTO @name, @age;<br>WHILE @@FETCH_STATUS = 0<br>BEGIN<br>    PRINT @name + ' is ' + CAST(@age AS VARCHAR)<br>    FETCH NEXT FROM cur INTO @name, @age<br>END<br>CLOSE cur;<br>DEALLOCATE cur;<br><br><strong>Disadvantages:</strong><br>• Performance overhead<br>• Network traffic<br>• Row locking issues"
+        },
+        {
+            q: "Explain Database Backup and Recovery.",
+            a: "Backup creates data copies; recovery restores from failures.<br><br><strong>Backup Types:</strong><br><br>1. <strong>Full Backup:</strong><br>   • Complete database copy<br>   • Largest size, longest time<br><br>2. <strong>Incremental Backup:</strong><br>   • Changes since last backup<br>   • Faster, smaller<br><br>3. <strong>Differential Backup:</strong><br>   • Changes since last full backup<br>   • Medium size<br><br>4. <strong>Continuous Backup:</strong><br>   • Real-time transaction log backup<br><br><strong>Recovery Models:</strong><br>• Simple: No log backups<br>• Full: Complete point-in-time recovery<br>• Bulk-logged: Minimal logging for bulk operations<br><br><strong>Point-in-Time Recovery:</strong><br>• Restore full backup<br>• Apply differential/incremental<br>• Apply transaction logs"
+        },
+        {
+            q: "What is ER Diagram?",
+            a: "Entity-Relationship diagram visually represents database structure.<br><br><strong>Components:</strong><br><br>1. <strong>Entities:</strong> Objects (Rectangle)<br>   • Student, Course, Department<br><br>2. <strong>Attributes:</strong> Properties (Ellipse)<br>   • student_id, name, age<br>   • Key attribute (underlined)<br>   • Composite attribute<br>   • Multi-valued attribute (double ellipse)<br>   • Derived attribute (dashed ellipse)<br><br>3. <strong>Relationships:</strong> Associations (Diamond)<br>   • Enrolls, Teaches, Belongs_to<br>   • Cardinality: 1:1, 1:N, M:N<br><br>4. <strong>Weak Entity:</strong> Depends on another (double rectangle)<br><br>5. <strong>Identifying Relationship:</strong> Links weak entity (double diamond)"
+        },
+        {
+            q: "Explain Cardinality in DBMS.",
+            a: "Cardinality defines number of entity occurrences in relationship.<br><br><strong>Types:</strong><br><br>1. <strong>One-to-One (1:1):</strong><br>   • Each entity relates to exactly one other<br>   • Example: Person ↔ Passport<br><br>2. <strong>One-to-Many (1:N):</strong><br>   • One entity relates to multiple others<br>   • Example: Department → Employees<br><br>3. <strong>Many-to-One (N:1):</strong><br>   • Multiple entities relate to one<br>   • Example: Employees → Department<br><br>4. <strong>Many-to-Many (M:N):</strong><br>   • Multiple entities relate to multiple others<br>   • Example: Students ↔ Courses<br>   • Requires junction table<br><br><strong>Cardinality Constraints:</strong><br>• Minimum cardinality (optional/mandatory)<br>• Maximum cardinality"
+        }
+    ],
+
+    os: [
+        {
+            q: "What is Operating System? Explain its functions.",
+            a: "Operating System is system software managing hardware and providing services to applications.<br><br><strong>Main Functions:</strong><br><br>1. <strong>Process Management:</strong><br>   • Create, schedule, terminate processes<br>   • CPU allocation<br>   • Process synchronization<br><br>2. <strong>Memory Management:</strong><br>   • Allocate/deallocate memory<br>   • Virtual memory<br>   • Protection and sharing<br><br>3. <strong>File Management:</strong><br>   • Create, delete files/directories<br>   • File access permissions<br>   • Directory structure<br><br>4. <strong>Device Management:</strong><br>   • Device drivers<br>   • I/O scheduling<br>   • Buffering<br><br>5. <strong>Security & Protection:</strong><br>   • User authentication<br>   • Access control<br>   • System protection"
+        },
+        {
+            q: "Explain different types of Operating Systems.",
+            a: "<strong>Types of Operating Systems:</strong><br><br>1. <strong>Batch OS:</strong><br>   • Jobs grouped in batches<br>   • No user interaction<br>   • Example: Early IBM systems<br><br>2. <strong>Time-Sharing OS:</strong><br>   • Multiple users share CPU time<br>   • Interactive<br>   • Example: Unix, Linux<br><br>3. <strong>Distributed OS:</strong><br>   • Multiple computers appear as single<br>   • Resource sharing<br>   • Example: Amoeba, Plan 9<br><br>4. <strong>Network OS:</strong><br>   • Computers connected via network<br>   • File sharing<br>   • Example: Windows Server, Novell<br><br>5. <strong>Real-Time OS (RTOS):</strong><br>   • Guaranteed response time<br>   • Industrial control<br>   • Example: VxWorks, QNX<br><br>6. <strong>Mobile OS:</strong><br>   • Touch-based interface<br>   • Power efficient<br>   • Example: Android, iOS"
+        },
+        {
+            q: "What is a Process? Explain process states.",
+            a: "Process is program in execution with its own memory space.<br><br><strong>Process States:</strong><br><br>1. <strong>New:</strong> Process being created<br>2. <strong>Ready:</strong> Ready to run, waiting for CPU<br>3. <strong>Running:</strong> Currently executing<br>4. <strong>Waiting (Blocked):</strong> Waiting for I/O or event<br>5. <strong>Terminated:</strong> Finished execution<br><br><strong>State Transitions:</strong><br>• New → Ready (admitted)<br>• Ready → Running (scheduler dispatch)<br>• Running → Ready (interrupt/timeout)<br>• Running → Waiting (I/O or event wait)<br>• Waiting → Ready (I/O complete)<br>• Running → Terminated (exit)<br><br><strong>PCB (Process Control Block):</strong><br>• Process ID<br>• Program counter<br>• CPU registers<br>• Memory limits<br>• Open files list"
+        },
+        {
+            q: "Explain Process Scheduling algorithms.",
+            a: "CPU scheduling decides which process gets CPU next.<br><br><strong>Algorithms:</strong><br><br>1. <strong>FCFS (First Come First Served):</strong><br>   • Non-preemptive<br>   • Simple, but convoy effect<br>   • Average waiting time high<br><br>2. <strong>SJF (Shortest Job First):</strong><br>   • Preemptive/non-preemptive<br>   • Minimum average waiting time<br>   • Starvation possible<br><br>3. <strong>Priority Scheduling:</strong><br>   • Higher priority runs first<br>   • Starvation for low priority<br>   • Aging solves starvation<br><br>4. <strong>Round Robin:</strong><br>   • Preemptive, time quantum<br>   • Fair allocation<br>   • Performance depends on quantum<br><br>5. <strong>Multilevel Queue:</strong><br>   • Multiple queues with priorities<br>   • Processes fixed in queue<br><br>6. <strong>Multilevel Feedback Queue:</strong><br>   • Processes move between queues<br>   • Most flexible"
+        },
+        {
+            q: "What is Thread? Difference between Process and Thread.",
+            a: "Thread is lightweight unit of execution within process.<br><br><strong>Comparison:</strong><br><br>| Feature | Process | Thread |<br>|---------|---------|--------|<br>| Definition | Program in execution | Lightweight process |<br>| Memory | Separate memory space | Shares memory |<br>| Creation | Heavy (more time) | Light (less time) |<br>| Context Switch | Slow | Fast |<br>| Communication | IPC (pipes, messages) | Shared memory |<br>| Independence | Independent | Dependent on process |<br>| Resources | Own resources | Shares resources |<br>| Crash Effect | Other processes safe | Can crash whole process |<br><br><strong>Thread Models:</strong><br>• User-level threads<br>• Kernel-level threads<br>• Hybrid threads"
+        },
+        {
+            q: "Explain Process Synchronization.",
+            a: "Process synchronization coordinates access to shared resources.<br><br><strong>Problems:</strong><br>• Race condition<br>• Deadlock<br>• Starvation<br><br><strong>Critical Section Problem:</strong><br>Code accessing shared resource must be mutually exclusive.<br><br><strong>Requirements:</strong><br>1. <strong>Mutual Exclusion:</strong> Only one process in critical section<br>2. <strong>Progress:</strong> No process outside critical section blocks others<br>3. <strong>Bounded Waiting:</strong> Process waits finite time<br><br><strong>Solutions:</strong><br>• Peterson's Solution<br>• Semaphores<br>• Monitors<br>• Mutex Locks"
+        },
+        {
+            q: "What are Semaphores?",
+            a: "Semaphore is synchronization tool using integer variable with wait/signal operations.<br><br><strong>Types:</strong><br><br>1. <strong>Binary Semaphore (Mutex):</strong><br>   • Values 0 or 1<br>   • Mutual exclusion<br><br>2. <strong>Counting Semaphore:</strong><br>   • Any non-negative integer<br>   • Resource management<br><br><strong>Operations:</strong><br>• <strong>wait() (P):</strong> Decrement, block if negative<br>• <strong>signal() (V):</strong> Increment, wake blocked<br><br><strong>Example - Producer-Consumer:</strong><br>semaphore empty = n, full = 0, mutex = 1<br><br>Producer:<br>    wait(empty)<br>    wait(mutex)<br>    // produce<br>    signal(mutex)<br>    signal(full)<br><br><strong>Advantages:</strong><br>• Machine independent<br>• Easy to implement<br><br><strong>Disadvantages:</strong><br>• Busy waiting<br>• Deadlock possible"
+        },
+        {
+            q: "Explain Deadlock and its conditions.",
+            a: "Deadlock is permanent blocking of processes waiting for resources held by each other.<br><br><strong>Necessary Conditions:</strong><br><br>1. <strong>Mutual Exclusion:</strong> Resources non-sharable<br>2. <strong>Hold and Wait:</strong> Process holds resources while waiting<br>3. <strong>No Preemption:</strong> Resources cannot be forcibly taken<br>4. <strong>Circular Wait:</strong> Circular chain of processes waiting<br><br><strong>Example:</strong><br>Process A: Holds Resource 1, waits for Resource 2<br>Process B: Holds Resource 2, waits for Resource 1<br><br><strong>Handling Methods:</strong><br>• Prevention: Break any condition<br>• Avoidance: Banker's Algorithm<br>• Detection: Resource Allocation Graph<br>• Recovery: Kill processes, preempt resources"
+        },
+        {
+            q: "What is Banker's Algorithm?",
+            a: "Banker's Algorithm prevents deadlock by checking safe state.<br><br><strong>Data Structures:</strong><br>• Available: Available resources<br>• Max: Maximum demand<br>• Allocation: Currently allocated<br>• Need: Remaining need (Max - Allocation)<br><br><strong>Safety Algorithm:</strong><br>1. Find process with Need ≤ Available<br>2. Assume it finishes, add Allocation to Available<br>3. Repeat until all processes finish<br>4. If sequence exists, state is safe<br><br><strong>Resource Request Algorithm:</strong><br>If Request ≤ Need and Request ≤ Available:<br>    Pretend to allocate<br>    Check if resulting state safe<br>    If safe, grant; else, wait<br><br><strong>Advantages:</strong><br>• Prevents deadlock<br>• No starvation<br><br><strong>Disadvantages:</strong><br>• Processes must know max needs<br>• Fixed number of resources"
+        },
+        {
+            q: "Explain Memory Management techniques.",
+            a: "Memory management allocates and tracks memory usage.<br><br><strong>Techniques:</strong><br><br>1. <strong>Contiguous Allocation:</strong><br>   • Single partition<br>   • Multiple partitions<br>   • Fragmentation problem<br><br>2. <strong>Paging:</strong><br>   • Non-contiguous<br>   • Fixed size pages/frames<br>   • Page table<br>   • No external fragmentation<br><br>3. <strong>Segmentation:</strong><br>   • Variable size segments<br>   • Segment table<br>   • External fragmentation<br><br>4. <strong>Virtual Memory:</strong><br>   • Process can be larger than physical<br>   • Demand paging<br>   • Page replacement<br><br>5. <strong>Swapping:</strong><br>   • Move process in/out of memory<br>   • Roll-in, roll-out"
+        },
+        {
+            q: "What is Paging? Explain Page Table.",
+            a: "Paging divides physical memory into fixed-size frames, logical memory into pages.<br><br><strong>Address Translation:</strong><br>Logical Address = Page Number + Offset<br>Physical Address = Frame Number + Offset<br><br><strong>Page Table:</strong><br>• Maps page number to frame number<br>• One entry per page<br>• Contains frame number<br>• May have valid/invalid bit<br><br><strong>Page Table Implementation:</strong><br>1. <strong>PTBR (Page Table Base Register):</strong> Points to page table<br>2. <strong>TLB (Translation Lookaside Buffer):</strong> Cache for fast translation<br><br><strong>Issues:</strong><br>• Page table size (for 32-bit, 4KB pages → 1M entries)<br>• Access time (two memory accesses)<br><br><strong>Solutions:</strong><br>• Multilevel paging<br>• Inverted page table<br>• Hashed page table"
+        },
+        {
+            q: "Explain Virtual Memory.",
+            a: "Virtual memory separates logical memory from physical memory.<br><br><strong>Benefits:</strong><br>• Programs larger than physical memory<br>• More processes in memory<br>• Less I/O for swapping<br><br><strong>Implementation:</strong><br><br>1. <strong>Demand Paging:</strong><br>   • Load pages only when needed<br>   • Page fault when page not in memory<br>   • Page fault handling<br><br>2. <strong>Copy-on-Write:</strong><br>   • Share pages until modified<br>   • Efficient fork()<br><br>3. <strong>Memory-Mapped Files:</strong><br>   • File I/O as memory access<br><br><strong>Page Replacement:</strong><br>• When no free frame, evict existing page<br>• Algorithms: FIFO, LRU, Optimal, Clock"
+        },
+        {
+            q: "What are Page Replacement Algorithms?",
+            a: "Page replacement selects victim page when memory is full.<br><br><strong>Algorithms:</strong><br><br>1. <strong>FIFO (First In First Out):</strong><br>   • Replace oldest page<br>   • Simple, but Belady's anomaly<br>   • Can replace frequently used page<br><br>2. <strong>Optimal (MIN/OPT):</strong><br>   • Replace page used farthest in future<br>   • Lowest page faults<br>   • Not implementable (needs future knowledge)<br><br>3. <strong>LRU (Least Recently Used):</strong><br>   • Replace page unused for longest<br>   • Good performance<br>   • Hardware support needed<br><br>4. <strong>LFU (Least Frequently Used):</strong><br>   • Replace least used page<br>   • Counter per page<br><br>5. <strong>Clock (Second Chance):</strong><br>   • FIFO with reference bit<br>   • Give pages second chance<br><br>6. <strong>NRU (Not Recently Used):</strong><br>   • Classify pages by R/M bits"
+        },
+        {
+            q: "Explain Thrashing.",
+            a: "Thrashing occurs when system spends more time paging than executing.<br><br><strong>Causes:</strong><br>• Too many processes in memory<br>• Insufficient frames per process<br>• High degree of multiprogramming<br><br><strong>Effects:</strong><br>• High page fault rate<br>• Low CPU utilization<br>• System throughput drops<br><br><strong>Detection:</strong><br>• Monitor page fault rate<br>• If too high → thrashing<br><br><strong>Solutions:</strong><br><br>1. <strong>Working Set Model:</strong><br>   • Keep process's working set in memory<br>   • Working set = pages actively used<br>   • If working set not available → thrashing<br><br>2. <strong>Page Fault Frequency (PFF):</strong><br>   • Control page fault rate<br>   • Allocate more frames if high<br>   • Suspend processes if needed<br><br>3. <strong>Reduce Multiprogramming:</strong><br>   • Swap out processes"
+        },
+        {
+            q: "What is Segmentation?",
+            a: "Segmentation divides program into variable-sized logical segments.<br><br><strong>Segments:</strong><br>• Code segment<br>• Data segment<br>• Stack segment<br>• Heap segment<br><br><strong>Segment Table:</strong><br>• Base: Starting physical address<br>• Limit: Length of segment<br>• Protection bits<br><br><strong>Address Translation:</strong><br>Logical Address = Segment Number + Offset<br>If Offset < Limit:<br>    Physical = Base + Offset<br>Else:<br>    Segmentation fault<br><br><strong>Advantages:</strong><br>• Logical view matches user view<br>• Protection per segment<br>• Sharing segments<br><br><strong>Disadvantages:</strong><br>• External fragmentation<br>• Variable allocation complexity"
+        },
+        {
+            q: "Explain File Systems.",
+            a: "File system manages files on storage devices.<br><br><strong>File Attributes:</strong><br>• Name, identifier, type<br>• Location, size<br>• Protection, time<br><br><strong>File Operations:</strong><br>• Create, Open, Read, Write<br>• Seek, Delete, Close<br><br><strong>Directory Structure:</strong><br>1. <strong>Single-Level:</strong> All files in one directory<br>2. <strong>Two-Level:</strong> Separate per user<br>3. <strong>Tree-Structured:</strong> Hierarchical<br>4. <strong>Graph-Structured:</strong> Links possible<br><br><strong>File Allocation Methods:</strong><br>• Contiguous: Fast, external fragmentation<br>• Linked: No fragmentation, slow direct access<br>• Indexed: Fast direct, index overhead<br><br><strong>Free Space Management:</strong><br>• Bit vector<br>• Linked list<br>• Grouping<br>• Counting"
+        },
+        {
+            q: "What are different Disk Scheduling Algorithms?",
+            a: "Disk scheduling optimizes disk I/O request order.<br><br><strong>Algorithms:</strong><br><br>1. <strong>FCFS (First Come First Served):</strong><br>   • Simple, fair<br>   • May cause wild swings<br><br>2. <strong>SSTF (Shortest Seek Time First):</strong><br>   • Service closest request<br>   • Starvation possible<br><br>3. <strong>SCAN (Elevator):</strong><br>   • Move in one direction, service requests<br>   • At end, reverse direction<br><br>4. <strong>C-SCAN (Circular SCAN):</strong><br>   • Move to end, then jump to start<br>   • More uniform wait time<br><br>5. <strong>LOOK:</strong><br>   • SCAN but only go to last request<br><br>6. <strong>C-LOOK:</strong><br>   • C-SCAN but only to last request<br><br><strong>Performance Metrics:</strong><br>• Seek time<br>• Rotational latency<br>• Transfer time"
+        },
+        {
+            q: "Explain Interprocess Communication (IPC).",
+            a: "IPC allows processes to communicate and synchronize.<br><br><strong>IPC Methods:</strong><br><br>1. <strong>Shared Memory:</strong><br>   • Processes share memory region<br>   • Fast, no kernel intervention<br>   • Synchronization needed<br>   • Example: POSIX shared memory<br><br>2. <strong>Message Passing:</strong><br>   • Kernel mediates communication<br>   • send() and receive() operations<br>   • Synchronous/Asynchronous<br>   • Example: Pipes, Message Queues<br><br>3. <strong>Pipes:</strong><br>   • Unidirectional byte stream<br>   • Ordinary pipes (parent-child)<br>   • Named pipes (FIFO)<br><br>4. <strong>Sockets:</strong><br>   • Network communication<br>   • Bidirectional<br><br>5. <strong>Signals:</strong><br>   • Software interrupts<br>   • Limited information"
+        },
+        {
+            q: "What is a Deadlock? Explain detection methods.",
+            a: "Deadlock detection identifies when deadlock has occurred.<br><br><strong>Detection Methods:</strong><br><br>1. <strong>Resource Allocation Graph (RAG):</strong><br>   • Directed graph<br>   • Processes (circles), Resources (squares)<br>   • Request edge P→R, Assignment edge R→P<br>   • Cycle indicates deadlock (if single instance)<br><br>2. <strong>Wait-For Graph:</strong><br>   • Simplified RAG for single instance<br>   • Edge P1→P2 if P1 waiting for P2<br>   • Cycle detection algorithm<br><br>3. <strong>Banker's Algorithm (detection mode):</strong><br>   • Check if any sequence exists<br>   • Time complexity O(m × n²)<br><br><strong>Multiple Resource Instances:</strong><br>• Detection algorithm using Available, Allocation, Request<br>• Mark processes that can finish<br>• Unmarked processes are deadlocked"
+        },
+        {
+            q: "Explain RAID and its levels.",
+            a: "RAID (Redundant Array of Independent Disks) combines multiple disks.<br><br><strong>RAID Levels:</strong><br><br>1. <strong>RAID 0 (Striping):</strong><br>   • Data striped across disks<br>   • No redundancy<br>   • Best performance<br><br>2. <strong>RAID 1 (Mirroring):</strong><br>   • Duplicate data on two disks<br>   • 100% redundancy<br>   • Write slower, read faster<br><br>3. <strong>RAID 2:</strong> Bit-level striping with Hamming code (obsolete)<br><br>4. <strong>RAID 3:</strong> Byte-level striping with parity disk<br><br>5. <strong>RAID 4:</strong> Block-level striping with parity disk<br><br>6. <strong>RAID 5 (Striping with Distributed Parity):</strong><br>   • Block-level striping<br>   • Parity distributed across disks<br>   • Minimum 3 disks<br>   • Can survive one disk failure<br><br>7. <strong>RAID 6 (Dual Parity):</strong><br>   • Two parity blocks<br>   • Can survive two disk failures<br>   • Minimum 4 disks<br><br>8. <strong>RAID 10 (1+0):</strong> Mirroring + Striping"
+        },
+        {
+            q: "What is Kernel? Explain types of kernels.",
+            a: "Kernel is core of OS, managing hardware and system resources.<br><br><strong>Kernel Types:</strong><br><br>1. <strong>Monolithic Kernel:</strong><br>   • All OS services in kernel space<br>   • Fast (no message passing)<br>   • Less secure, harder to maintain<br>   • Example: Linux, Unix<br><br>2. <strong>Microkernel:</strong><br>   • Minimal kernel (IPC, scheduling)<br>   • Services in user space<br>   • More secure, modular<br>   • Slower (message passing)<br>   • Example: QNX, L4<br><br>3. <strong>Hybrid Kernel:</strong><br>   • Combines monolithic and microkernel<br>   • Some services in kernel for speed<br>   • Example: Windows NT, macOS XNU<br><br>4. <strong>Exokernel:</strong><br>   • Minimal kernel, applications manage resources<br>   • Maximum flexibility<br>   • Research use"
+        },
+        {
+            q: "Explain System Calls.",
+            a: "System calls provide interface between user programs and OS.<br><br><strong>Types:</strong><br><br>1. <strong>Process Control:</strong><br>   • fork(), exec(), exit()<br>   • wait(), kill()<br><br>2. <strong>File Management:</strong><br>   • open(), read(), write()<br>   • close(), lseek()<br>   • creat(), unlink()<br><br>3. <strong>Device Management:</strong><br>   • ioctl(), read(), write()<br><br>4. <strong>Information Maintenance:</strong><br>   • getpid(), alarm(), sleep()<br>   • setuid(), getuid()<br><br>5. <strong>Communication:</strong><br>   • pipe(), shmget(), mmap()<br>   • socket(), send(), recv()<br><br><strong>Steps:</strong><br>1. User program calls library function<br>2. Library function puts arguments in registers<br>3. Trap to kernel mode<br>4. Kernel executes system call<br>5. Return to user mode"
+        },
+        {
+            q: "What is Spooling?",
+            a: "Spooling (Simultaneous Peripheral Operations On-Line) buffers data for devices.<br><br><strong>Characteristics:</strong><br>• Overlaps I/O of one job with computation of another<br>• Uses disk as huge buffer<br>• Decouples device speed from program<br><br><strong>Examples:</strong><br><br>1. <strong>Print Spooling:</strong><br>   • Programs write to spool directory<br>   • Printer daemon prints from spool<br>   • Programs don't wait for printer<br><br>2. <strong>Input Spooling:</strong><br>   • Read from card reader to disk<br>   • Programs read from disk<br><br><strong>Advantages:</strong><br>• No direct device contention<br>• Multiprogramming possible<br>• Devices work at own speed<br><br><strong>vs Buffering:</strong><br>• Spooling overlaps I/O of multiple jobs<br>• Buffering overlaps I/O of single job"
+        },
+        {
+            q: "Explain Fragmentation (Internal and External).",
+            a: "Fragmentation is wasted memory space.<br><br><strong>Internal Fragmentation:</strong><br>• Allocated memory > requested memory<br>• Wasted space inside allocated block<br>• Example: Paging (last page may be partially used)<br>• Solution: Slab allocation<br><br><strong>External Fragmentation:</strong><br>• Total free memory enough but not contiguous<br>• Wasted space between allocations<br>• Example: Segmentation, dynamic partitioning<br>• Solutions:<br>  • Compaction: Rearrange memory<br>  • Paging: Fixed size frames<br>  • Buddy system<br><br><strong>Example:</strong><br>Memory: [Allocated][Free 4K][Allocated][Free 6K]<br>Need 8K: Cannot allocate despite 10K free (external fragmentation)<br>Allocate 5K to 4K block: 1K wasted (internal fragmentation)"
+        },
+        {
+            q: "What is Virtual Machine?",
+            a: "Virtual Machine (VM) emulates physical computer, running OS and applications.<br><br><strong>Types:</strong><br><br>1. <strong>System VMs:</strong><br>   • Complete system platform<br>   • Multiple OS on one hardware<br>   • Example: VMware, VirtualBox, KVM<br><br>2. <strong>Process VMs:</strong><br>   • Run single process<br>   • Platform independence<br>   • Example: JVM (Java), CLR (.NET)<br><br><strong>Hypervisor (VMM):</strong><br>• Manages VMs<br>• Type 1 (Bare-metal): Runs directly on hardware (ESXi, Xen)<br>• Type 2 (Hosted): Runs on host OS (VirtualBox, VMware Workstation)<br><br><strong>Benefits:</strong><br>• Isolation<br>• Consolidation<br>• Snapshots<br>• Testing<br>• Cloud computing"
+        },
+        {
+            q: "Explain Docker and Containerization.",
+            a: "Containerization virtualizes OS, sharing host kernel with isolated user spaces.<br><br><strong>Docker Components:</strong><br>• <strong>Images:</strong> Read-only templates<br>• <strong>Containers:</strong> Running instances<br>• <strong>Dockerfile:</strong> Build instructions<br>• <strong>Registry:</strong> Image storage (Docker Hub)<br><br><strong>vs Virtual Machines:</strong><br><br>| Feature | Container | VM |<br>|---------|-----------|-----|<br>| OS | Shares host kernel | Own OS |<br>| Isolation | Process-level | Hardware-level |<br>| Size | MB | GB |<br>| Start time | Seconds | Minutes |<br>| Performance | Near-native | Some overhead |<br><br><strong>Benefits:</strong><br>• Lightweight<br>• Portable<br>• Consistent environments<br>• Microservices<br>• DevOps/CI-CD"
+        },
+        {
+            q: "What is Distributed System?",
+            a: "Distributed system has multiple computers appearing as single coherent system.<br><br><strong>Characteristics:</strong><br>• No shared memory<br>• Message passing<br>• Concurrency<br>• No global clock<br>• Independent failures<br><br><strong>Goals:</strong><br>• Resource sharing<br>• Scalability<br>• Fault tolerance<br>• Transparency<br><br><strong>Transparencies:</strong><br>• Access: Same operations<br>• Location: No need to know location<br>• Migration: Resources can move<br>• Replication: Multiple copies hidden<br>• Concurrency: Multiple users<br>• Failure: Hide failures<br><br><strong>Examples:</strong><br>• Distributed databases<br>• Cloud computing<br>• Peer-to-peer networks<br>• Cluster computing"
+        },
+        {
+            q: "Explain Real-Time Operating System (RTOS).",
+            a: "RTOS guarantees response within fixed time constraints.<br><br><strong>Types:</strong><br><br>1. <strong>Hard Real-Time:</strong><br>   • Must meet deadlines absolutely<br>   • Failure = system failure<br>   • Example: Airbag system, pacemaker<br><br>2. <strong>Soft Real-Time:</strong><br>   • Deadlines important but not catastrophic<br>   • Example: Video streaming, audio<br><br><strong>Characteristics:</strong><br>• Deterministic behavior<br>• Priority-based scheduling<br>• Fast context switch<br>• Minimal latency<br>• Predictable<br><br><strong>Scheduling:</strong><br>• Rate Monotonic (RM): Static priority<br>• Earliest Deadline First (EDF): Dynamic priority<br><br><strong>Applications:</strong><br>• Industrial control<br>• Robotics<br>• Automotive<br>• Medical devices<br>• Defense systems"
+        }
+    ],
+
+    cn: [
+        {
+            q: "What is Computer Network? Explain types.",
+            a: "Computer network connects multiple devices to share resources and data.<br><br><strong>Types by Size:</strong><br><br>1. <strong>PAN (Personal Area Network):</strong><br>   • Very small area (few meters)<br>   • Bluetooth, USB<br><br>2. <strong>LAN (Local Area Network):</strong><br>   • Single building/campus<br>   • High speed, Ethernet/WiFi<br><br>3. <strong>MAN (Metropolitan Area Network):</strong><br>   • City-wide network<br>   • Example: Cable TV network<br><br>4. <strong>WAN (Wide Area Network):</strong><br>   • Large geographical area<br>   • Internet is largest WAN<br><br><strong>Types by Architecture:</strong><br>• Client-Server<br>• Peer-to-Peer (P2P)<br><br><strong>Types by Topology:</strong><br>• Bus, Star, Ring, Mesh, Tree"
+        },
+        {
+            q: "Explain OSI Model with layers.",
+            a: "OSI (Open Systems Interconnection) model has 7 layers for network communication.<br><br><strong>7 Layers:</strong><br><br>1. <strong>Physical Layer:</strong><br>   • Bits transmission<br>   • Cables, hubs, repeaters<br>   • Data: Bits<br><br>2. <strong>Data Link Layer:</strong><br>   • Framing, MAC addressing<br>   • Switches, bridges<br>   • Data: Frames<br><br>3. <strong>Network Layer:</strong><br>   • Routing, logical addressing (IP)<br>   • Routers<br>   • Data: Packets<br><br>4. <strong>Transport Layer:</strong><br>   • Reliable delivery, flow control<br>   • TCP/UDP<br>   • Data: Segments<br><br>5. <strong>Session Layer:</strong><br>   • Session management<br>   • APIs, NetBIOS<br><br>6. <strong>Presentation Layer:</strong><br>   • Data encryption, compression<br>   • SSL/TLS, JPEG, ASCII<br><br>7. <strong>Application Layer:</strong><br>   • User applications<br>   • HTTP, FTP, SMTP, DNS"
+        },
+        {
+            q: "Explain TCP/IP Model.",
+            a: "TCP/IP is practical model used in internet communication.<br><br><strong>4 Layers:</strong><br><br>1. <strong>Network Interface Layer:</strong><br>   • Combines OSI Physical + Data Link<br>   • Ethernet, WiFi, ARP<br><br>2. <strong>Internet Layer:</strong><br>   • Equivalent to OSI Network layer<br>   • IP, ICMP, ARP<br>   • Packet routing<br><br>3. <strong>Transport Layer:</strong><br>   • End-to-end communication<br>   • TCP (reliable), UDP (unreliable)<br><br>4. <strong>Application Layer:</strong><br>   • Combines OSI Session + Presentation + Application<br>   • HTTP, FTP, SMTP, DNS<br><br><strong>vs OSI:</strong><br>• TCP/IP is simpler (4 vs 7 layers)<br>• TCP/IP was developed before OSI<br>• TCP/IP is protocol-driven, OSI is theoretical"
+        },
+        {
+            q: "What is IP Address? Explain classes.",
+            a: "IP Address uniquely identifies device on network.<br><br><strong>IPv4 Classes:</strong><br><br>1. <strong>Class A:</strong><br>   • 1.0.0.0 to 126.255.255.255<br>   • First bit 0<br>   • Large networks (16M hosts)<br><br>2. <strong>Class B:</strong><br>   • 128.0.0.0 to 191.255.255.255<br>   • First bits 10<br>   • Medium networks (65K hosts)<br><br>3. <strong>Class C:</strong><br>   • 192.0.0.0 to 223.255.255.255<br>   • First bits 110<br>   • Small networks (254 hosts)<br><br>4. <strong>Class D:</strong><br>   • 224.0.0.0 to 239.255.255.255<br>   • Multicast<br><br>5. <strong>Class E:</strong><br>   • 240.0.0.0 to 255.255.255.255<br>   • Reserved<br><br><strong>Special Addresses:</strong><br>• 127.0.0.1: Localhost<br>• 0.0.0.0: Default route<br>• 255.255.255.255: Broadcast"
+        },
+        {
+            q: "Explain IPv4 vs IPv6.",
+            a: "IPv6 is next generation protocol replacing IPv4.<br><br><strong>Comparison:</strong><br><br>| Feature | IPv4 | IPv6 |<br>|---------|------|------|<br>| Address Size | 32-bit (4 bytes) | 128-bit (16 bytes) |<br>| Address Format | Dotted decimal (192.168.1.1) | Hexadecimal (2001:db8::1) |<br>| Address Space | 4.3 billion | 340 undecillion (3.4×10³⁸) |<br>| Configuration | Manual/DHCP | Stateless autoconfig (SLAAC) |<br>| Security | Optional (IPSec) | Built-in IPSec |<br>| Fragmentation | By routers | By sender only |<br>| Checksum | Has header checksum | No checksum |<br>| Broadcast | Yes | No (multicast/anycast) |<br><br><strong>IPv6 Advantages:</strong><br>• Larger address space<br>• Better security<br>• Simplified header<br>• No NAT needed<br>• Mobility support"
+        },
+        {
+            q: "What is Subnetting?",
+            a: "Subnetting divides large network into smaller subnetworks.<br><br><strong>Purpose:</strong><br>• Efficient IP address use<br>• Reduced network traffic<br>• Improved security<br>• Easier management<br><br><strong>Subnet Mask:</strong><br>• 32-bit number separating network and host parts<br>• Example: 255.255.255.0 (/24)<br><br><strong>CIDR Notation:</strong><br>• 192.168.1.0/24<br>• /24 means first 24 bits are network<br><br><strong>Example:</strong><br>Network: 192.168.1.0/24 (256 addresses)<br>Subnet mask: 255.255.255.0<br><br>Create 4 subnets (borrow 2 bits):<br>• Subnet 1: 192.168.1.0/26 (0-63)<br>• Subnet 2: 192.168.1.64/26 (64-127)<br>• Subnet 3: 192.168.1.128/26 (128-191)<br>• Subnet 4: 192.168.1.192/26 (192-255)"
+        },
+        {
+            q: "Explain TCP and UDP protocols.",
+            a: "TCP and UDP are transport layer protocols.<br><br><strong>TCP (Transmission Control Protocol):</strong><br>• Connection-oriented<br>• Reliable (acknowledgments, retransmission)<br>• Flow control<br>• Congestion control<br>• Ordered delivery<br>• Example: HTTP, FTP, SMTP<br><br><strong>UDP (User Datagram Protocol):</strong><br>• Connectionless<br>• Unreliable (no ACK)<br>• No flow control<br>• No ordering<br>• Faster, lower overhead<br>• Example: DNS, DHCP, VoIP, Streaming<br><br><strong>Comparison:</strong><br><br>| Feature | TCP | UDP |<br>|---------|-----|-----|<br>| Connection | Connection-oriented | Connectionless |<br>| Reliability | Reliable | Unreliable |<br>| Header Size | 20 bytes | 8 bytes |<br>| Speed | Slower | Faster |<br>| Use Cases | Web, Email, File transfer | Streaming, Gaming, DNS |"
+        },
+        {
+            q: "What is DNS? How does it work?",
+            a: "DNS (Domain Name System) converts domain names to IP addresses.<br><br><strong>DNS Hierarchy:</strong><br>• Root DNS Servers (.)<br>• TLD Servers (.com, .org, .net)<br>• Authoritative DNS Servers<br><br><strong>DNS Record Types:</strong><br>• A: IPv4 address<br>• AAAA: IPv6 address<br>• CNAME: Canonical name (alias)<br>• MX: Mail exchange<br>• TXT: Text information<br>• NS: Name server<br><br><strong>Query Process:</strong><br>1. Browser checks local cache<br>2. Checks hosts file<br>3. Queries recursive DNS resolver<br>4. Resolver queries root server<br>5. Root points to TLD server<br>6. TLD points to authoritative server<br>7. Authoritative returns IP<br>8. Response cached<br><br><strong>Example:</strong><br>www.google.com → 142.250.185.46"
+        },
+        {
+            q: "Explain HTTP and HTTPS.",
+            a: "HTTP (Hypertext Transfer Protocol) transfers web data.<br><br><strong>HTTP Methods:</strong><br>• GET: Retrieve resource<br>• POST: Submit data<br>• PUT: Update resource<br>• DELETE: Remove resource<br>• HEAD: Get headers only<br>• OPTIONS: Get allowed methods<br><br><strong>HTTP Status Codes:</strong><br>• 1xx: Informational<br>• 2xx: Success (200 OK)<br>• 3xx: Redirection (301 Moved)<br>• 4xx: Client Error (404 Not Found)<br>• 5xx: Server Error (500 Internal)<br><br><strong>HTTPS (HTTP Secure):</strong><br>• HTTP + SSL/TLS encryption<br>• Port 443<br>• Provides:<br>  • Authentication: Server identity verified<br>  • Encryption: Data encrypted<br>  • Integrity: Data not modified<br>• Uses certificates from CA<br><br><strong>vs HTTP:</strong><br>• HTTP: Port 80, plain text<br>• HTTPS: Port 443, encrypted"
+        },
+        {
+            q: "What is FTP?",
+            a: "FTP (File Transfer Protocol) transfers files between client and server.<br><br><strong>Characteristics:</strong><br>• Port 21 (control), Port 20 (data)<br>• Two connections: Control + Data<br>• Authentication required<br><br><strong>Modes:</strong><br>1. <strong>Active Mode:</strong><br>   • Client opens random port<br>   • Server connects from port 20 to client<br>   • May face firewall issues<br><br>2. <strong>Passive Mode:</strong><br>   • Client opens two random ports<br>   • Server opens random port for data<br>   • Better for firewalls<br><br><strong>FTP Commands:</strong><br>• USER, PASS: Authentication<br>• LIST: List files<br>• RETR: Download file<br>• STOR: Upload file<br>• DELE: Delete file<br>• MKD: Make directory<br><br><strong>Secure Alternatives:</strong><br>• SFTP (SSH File Transfer)<br>• FTPS (FTP over SSL)"
+        },
+        {
+            q: "Explain SMTP, POP3, and IMAP.",
+            a: "Email protocols for sending and receiving messages.<br><br><strong>SMTP (Simple Mail Transfer Protocol):</strong><br>• Sending emails (Port 25, 587)<br>• Push protocol<br>• Used between mail servers<br>• Commands: HELO, MAIL FROM, RCPT TO, DATA<br><br><strong>POP3 (Post Office Protocol v3):</strong><br>• Retrieving emails (Port 110)<br>• Downloads and deletes from server<br>• Offline access<br>• Not suitable for multiple devices<br><br><strong>IMAP (Internet Message Access Protocol):</strong><br>• Retrieving emails (Port 143)<br>• Messages stay on server<br>• Synchronization across devices<br>• Manage folders on server<br>• More features than POP3<br><br><strong>Workflow:</strong><br>1. User sends email via SMTP to outgoing server<br>2. Server uses SMTP to forward to recipient's server<br>3. Recipient retrieves via POP3/IMAP<br>4. Replies use SMTP again"
+        },
+        {
+            q: "What is MAC Address?",
+            a: "MAC (Media Access Control) address is physical address of network interface.<br><br><strong>Characteristics:</strong><br>• 48-bit (6 bytes)<br>• Hexadecimal format (00:1A:2B:3C:4D:5E)<br>• Unique per device (theoretically)<br>• Assigned by manufacturer<br>• Layer 2 (Data Link Layer)<br><br><strong>Structure:</strong><br>• First 24 bits: OUI (Organizationally Unique Identifier)<br>• Last 24 bits: NIC-specific<br><br><strong>Types:</strong><br>• Unicast: First byte LSB=0<br>• Multicast: First byte LSB=1<br>• Broadcast: FF:FF:FF:FF:FF:FF<br><br><strong>vs IP Address:</strong><br>• MAC: Physical, Layer 2, permanent<br>• IP: Logical, Layer 3, can change<br><br><strong>ARP (Address Resolution Protocol):</strong><br>Maps IP address to MAC address"
+        },
+        {
+            q: "Explain ARP and RARP.",
+            a: "ARP and RARP resolve between IP and MAC addresses.<br><br><strong>ARP (Address Resolution Protocol):</strong><br>• Maps IP address → MAC address<br>• Broadcast request: 'Who has IP x.x.x.x?'<br>• Target responds with MAC<br>• ARP cache stores mappings<br>• Gratuitous ARP: Announce own IP-MAC<br><br><strong>ARP Packet:</strong><br>• Hardware type<br>• Protocol type<br>• Sender MAC/IP<br>• Target MAC/IP<br><br><strong>RARP (Reverse ARP):</strong><br>• Maps MAC address → IP address<br>• Used by diskless workstations<br>• Obsolete (replaced by BOOTP/DHCP)<br><br><strong>ARP Spoofing (Attack):</strong><br>• Send fake ARP replies<br>• Attacker becomes man-in-the-middle<br>• Prevent with static ARP entries"
+        },
+        {
+            q: "What is DHCP?",
+            a: "DHCP (Dynamic Host Configuration Protocol) automatically assigns IP addresses.<br><br><strong>DORA Process:</strong><br><br>1. <strong>Discover:</strong> Client broadcasts DHCPDISCOVER<br>2. <strong>Offer:</strong> Server responds DHCPOFFER with IP<br>3. <strong>Request:</strong> Client broadcasts DHCPREQUEST<br>4. <strong>Acknowledge:</strong> Server sends DHCPACK<br><br><strong>DHCP Options:</strong><br>• IP address<br>• Subnet mask<br>• Default gateway<br>• DNS servers<br>• Lease time<br><br><strong>Lease Management:</strong><br>• IP address temporary (lease)<br>• Client renews before expiry<br>• T1 (50%): Renew<br>• T2 (87.5%): Rebroadcast<br><br><strong>Advantages:</strong><br>• Automatic configuration<br>• No IP conflicts<br>• Efficient IP usage<br>• Centralized management"
+        },
+        {
+            q: "Explain NAT (Network Address Translation).",
+            a: "NAT maps private IPs to public IP for internet access.<br><br><strong>Types:</strong><br><br>1. <strong>Static NAT:</strong><br>   • One-to-one mapping<br>   • Each private IP maps to specific public IP<br><br>2. <strong>Dynamic NAT:</strong><br>   • Pool of public IPs<br>   • Mapped dynamically<br><br>3. <strong>PAT (Port Address Translation)/NAPT:</strong><br>   • Many-to-one mapping<br>   • Uses port numbers to differentiate<br>   • Most common (home routers)<br><br><strong>How PAT Works:</strong><br>Private: 192.168.1.10:1234 → Public: 203.0.113.5:5678<br>Private: 192.168.1.11:1234 → Public: 203.0.113.5:5679<br><br><strong>Advantages:</strong><br>• Conserves public IPs<br>• Security (hides internal network)<br>• Flexibility<br><br><strong>Disadvantages:</strong><br>• Breaks end-to-end connectivity<br>• Issues with some protocols (FTP, VoIP)"
+        },
+        {
+            q: "What is a Firewall?",
+            a: "Firewall monitors and controls network traffic based on rules.<br><br><strong>Types:</strong><br><br>1. <strong>Packet Filtering Firewall:</strong><br>   • Inspects packets individually<br>   • Based on IP, port, protocol<br>   • Stateless<br><br>2. <strong>Stateful Inspection Firewall:</strong><br>   • Tracks connection state<br>   • More secure than packet filtering<br><br>3. <strong>Application Gateway (Proxy):</strong><br>   • Inspects application data<br>   • Acts as intermediary<br><br>4. <strong>Next-Generation Firewall (NGFW):</strong><br>   • Deep packet inspection<br>   • Intrusion prevention<br>   • Application awareness<br><br><strong>Rules:</strong><br>• Allow/Deny based on:<br>  • Source/Destination IP<br>  • Source/Destination Port<br>  • Protocol<br>  • Direction<br><br><strong>Example Rule:</strong><br>Allow TCP from 192.168.1.0/24 to any port 80"
+        },
+        {
+            q: "Explain VPN (Virtual Private Network).",
+            a: "VPN creates encrypted tunnel over public network for secure communication.<br><br><strong>Types:</strong><br><br>1. <strong>Remote Access VPN:</strong><br>   • Individual connects to corporate network<br>   • Client software required<br><br>2. <strong>Site-to-Site VPN:</strong><br>   • Connects entire networks<br>   • Router-to-router<br><br><strong>VPN Protocols:</strong><br>• <strong>PPTP:</strong> Old, insecure<br>• <strong>L2TP/IPsec:</strong> Layer 2 + IPsec<br>• <strong>IPsec:</strong> Secure, common<br>• <strong>OpenVPN:</strong> Open source, flexible<br>• <strong>WireGuard:</strong> Modern, fast<br><br><strong>Benefits:</strong><br>• Encryption<br>• Authentication<br>• Anonymity<br>• Access geo-restricted content<br>• Secure remote work<br><br><strong>Tunneling:</strong><br>Original packet encrypted and encapsulated in new packet"
+        },
+        {
+            q: "What is OSI Model's Physical Layer?",
+            a: "Physical layer deals with bit transmission over physical medium.<br><br><strong>Functions:</strong><br>• Bit representation (encoding)<br>• Data rate control<br>• Synchronization<br>• Line configuration (point-to-point/multipoint)<br>• Physical topology<br>• Transmission mode (simplex, half-duplex, full-duplex)<br><br><strong>Hardware:</strong><br>• Hubs<br>• Repeaters<br>• Modems<br>• Cables (UTP, coaxial, fiber)<br>• Connectors (RJ45)<br><br><strong>Signals:</strong><br>• Analog: Continuous waves<br>• Digital: Discrete pulses<br><br><strong>Transmission Media:</strong><br>• Guided: Twisted pair, coaxial, fiber optic<br>• Unguided: Radio waves, microwave, infrared"
+        },
+        {
+            q: "Explain Data Link Layer functions.",
+            a: "Data Link layer provides node-to-node reliable data transfer.<br><br><strong>Functions:</strong><br><br>1. <strong>Framing:</strong><br>   • Divides bit stream into frames<br>   • Adds header and trailer<br><br>2. <strong>Physical Addressing:</strong><br>   • MAC addresses in header<br><br>3. <strong>Error Control:</strong><br>   • Error detection (CRC, checksum)<br>   • Error correction (ARQ)<br><br>4. <strong>Flow Control:</strong><br>   • Prevents sender overwhelming receiver<br>   • Stop-and-Wait, Sliding Window<br><br>5. <strong>Access Control:</strong><br>   • Controls which device transmits<br>   • CSMA/CD, CSMA/CA<br><br><strong>Sub-layers:</strong><br>• LLC (Logical Link Control): Error/flow control<br>• MAC (Media Access Control): Addressing, channel access<br><br><strong>Protocols:</strong><br>• Ethernet (IEEE 802.3)<br>• WiFi (IEEE 802.11)<br>• PPP (Point-to-Point Protocol)"
+        },
+        {
+            q: "What is CSMA/CD?",
+            a: "CSMA/CD (Carrier Sense Multiple Access with Collision Detection) used in Ethernet.<br><br><strong>Process:</strong><br><br>1. <strong>Carrier Sense:</strong><br>   • Listen before transmitting<br>   • If channel idle → transmit<br>   • If busy → wait<br><br>2. <strong>Collision Detection:</strong><br>   • Monitor while transmitting<br>   • If collision detected:<br>     • Stop transmission<br>     • Send jam signal<br>     • Wait random time (backoff)<br>     • Retry<br><br><strong>Binary Exponential Backoff:</strong><br>• After nth collision, wait random time from 0 to 2ⁿ-1<br>• Increases with collisions<br><br><strong>Ethernet Frame:</strong><br>• Preamble (7 bytes)<br>• SFD (1 byte)<br>• Dest MAC (6)<br>• Src MAC (6)<br>• Length/Type (2)<br>• Data (46-1500)<br>• CRC (4)<br><br><strong>CSMA/CA (Collision Avoidance):</strong><br>Used in WiFi (wireless)"
+        },
+        {
+            q: "Explain Network Layer protocols.",
+            a: "Network layer handles routing and logical addressing.<br><br><strong>IP (Internet Protocol):</strong><br>• IPv4, IPv6<br>• Connectionless<br>• Best-effort delivery<br><br><strong>ICMP (Internet Control Message Protocol):</strong><br>• Error reporting<br>• Ping, Traceroute<br>• Destination unreachable<br>• Time exceeded<br><br><strong>ARP (Address Resolution Protocol):</strong><br>• IP to MAC mapping<br><br><strong>RARP:</strong><br>• MAC to IP (obsolete)<br><br><strong>Routing Protocols:</strong><br><br>1. <strong>RIP (Routing Information Protocol):</strong><br>   • Distance vector<br>   • Hop count metric<br>   • Max 15 hops<br><br>2. <strong>OSPF (Open Shortest Path First):</strong><br>   • Link state<br>   • Dijkstra algorithm<br>   • Fast convergence<br><br>3. <strong>BGP (Border Gateway Protocol):</strong><br>   • Path vector<br>   • Inter-domain routing<br>   • Used on internet"
+        },
+        {
+            q: "What is Routing? Explain types.",
+            a: "Routing determines path for packets to reach destination.<br><br><strong>Routing Algorithms:</strong><br><br>1. <strong>Distance Vector:</strong><br>   • Share routing table with neighbors<br>   • Bellman-Ford algorithm<br>   • Example: RIP<br>   • Count-to-infinity problem<br><br>2. <strong>Link State:</strong><br>   • Share link information with all routers<br>   • Dijkstra's algorithm<br>   • Example: OSPF<br>   • Faster convergence<br><br><strong>Routing Types:</strong><br><br>1. <strong>Static Routing:</strong><br>   • Manual configuration<br>   • No adaptation to changes<br><br>2. <strong>Dynamic Routing:</strong><br>   • Automatic updates<br>   • Adapts to network changes<br><br><strong>Routing Tables:</strong><br>• Destination network<br>• Next hop<br>• Metric<br>• Interface"
+        },
+        {
+            q: "Explain TCP 3-Way Handshake.",
+            a: "TCP 3-way handshake establishes reliable connection.<br><br><strong>Process:</strong><br><br>1. <strong>SYN (Client → Server):</strong><br>   • Client sends SYN packet<br>   • Sequence number = x<br>   • SYN flag = 1<br><br>2. <strong>SYN-ACK (Server → Client):</strong><br>   • Server responds with SYN-ACK<br>   • Acknowledgment number = x+1<br>   • Server's sequence number = y<br>   • SYN=1, ACK=1<br><br>3. <strong>ACK (Client → Server):</strong><br>   • Client sends ACK<br>   • Acknowledgment number = y+1<br>   • Sequence number = x+1<br>   • ACK=1<br><br><strong>Connection Established:</strong><br>Both sides can send data<br><br><strong>TCP Flags:</strong><br>• SYN: Synchronize<br>• ACK: Acknowledgment<br>• FIN: Finish<br>• RST: Reset<br>• PSH: Push<br>• URG: Urgent<br><br><strong>Connection Termination:</strong><br>4-way handshake (FIN, ACK, FIN, ACK)"
+        },
+        {
+            q: "What is Congestion Control?",
+            a: "Congestion control prevents network overload.<br><br><strong>TCP Congestion Control Algorithms:</strong><br><br>1. <strong>Slow Start:</strong><br>   • Initially congestion window = 1 MSS<br>   • Double each RTT (exponential)<br>   • Until threshold (ssthresh)<br><br>2. <strong>Congestion Avoidance:</strong><br>   • After ssthresh, additive increase<br>   • Increase by 1 MSS per RTT<br><br>3. <strong>Fast Retransmit:</strong><br>   • 3 duplicate ACKs → retransmit<br>   • Don't wait for timeout<br><br>4. <strong>Fast Recovery:</strong><br>   • After fast retransmit<br>   • Set ssthresh = cwnd/2<br>   • cwnd = ssthresh + 3<br>   • Then congestion avoidance<br><br><strong>TCP Variants:</strong><br>• Tahoe<br>• Reno<br>• NewReno<br>• Cubic<br><br><strong>AQM (Active Queue Management):</strong><br>• RED, ECN"
+        },
+        {
+            q: "Explain Flow Control in TCP.",
+            a: "Flow control prevents sender from overwhelming receiver.<br><br><strong>Sliding Window Protocol:</strong><br><br>1. <strong>Receiver Window (rwnd):</strong><br>   • Advertised by receiver<br>   • Free buffer space<br>   • Included in TCP header<br><br>2. <strong>Congestion Window (cwnd):</strong><br>   • Sender's estimate of network capacity<br><br>3. <strong>Send Window = min(cwnd, rwnd)</strong><br><br><strong>Mechanism:</strong><br>• Sender can send up to window size before ACK<br>• Receiver ACKs consumed data<br>• Window slides forward<br><br><strong>Stop-and-Wait vs Sliding Window:</strong><br><br>| Feature | Stop-and-Wait | Sliding Window |<br>|---------|---------------|----------------|<br>| Efficiency | Low | High |<br>| Window Size | 1 packet | Multiple packets |<br>| Utilization | Poor | Good |<br><br><strong>Zero Window:</strong><br>• Receiver advertises window=0<br>• Sender stops transmitting<br>• Periodic window probes"
+        },
+        {
+            q: "What are Sockets and Ports?",
+            a: "Sockets and ports enable network communication between processes.<br><br><strong>Socket:</strong><br>• Endpoint for communication<br>• IP address + Port number<br>• Types: Stream (TCP), Datagram (UDP)<br><br><strong>Socket Functions:</strong><br>• socket(): Create socket<br>• bind(): Assign address<br>• listen(): Wait for connections (TCP server)<br>• connect(): Connect to server (TCP client)<br>• accept(): Accept connection (TCP server)<br>• send()/recv(): Data transfer<br>• close(): Close socket<br><br><strong>Port Numbers:</strong><br>• 0-1023: Well-known ports<br>  • 20,21: FTP<br>  • 22: SSH<br>  • 23: Telnet<br>  • 25: SMTP<br>  • 53: DNS<br>  • 80: HTTP<br>  • 443: HTTPS<br>• 1024-49151: Registered ports<br>• 49152-65535: Dynamic/private<br><br><strong>Socket Pair:</strong><br>(Client IP, Client Port, Server IP, Server Port)"
+        },
+        {
+            q: "Explain Wireshark and its uses.",
+            a: "Wireshark is network protocol analyzer for packet capture and inspection.<br><br><strong>Features:</strong><br>• Live capture<br>• Offline analysis<br>• Deep packet inspection<br>• Filtering (display and capture)<br>• Color coding<br>• Statistics and graphs<br>• VoIP analysis<br><br><strong>Capture Filters (BPF):</strong><br>• host 192.168.1.1<br>• port 80<br>• tcp or udp<br>• not arp<br><br><strong>Display Filters:</strong><br>• ip.src == 192.168.1.1<br>• tcp.port == 443<br>• http.request.method == \"GET\"<br>• dns.qry.name contains \"google\"<br><br><strong>Uses:</strong><br>• Network troubleshooting<br>• Security analysis<br>• Protocol development<br>• Learning networking<br>• Debugging applications<br><br><strong>Follow TCP Stream:</strong><br>Reconstructs entire TCP conversation"
+        },
+        {
+            q: "What is QoS (Quality of Service)?",
+            a: "QoS manages network resources to ensure performance for critical applications.<br><br><strong>QoS Parameters:</strong><br>• Bandwidth<br>• Delay (latency)<br>• Jitter (delay variation)<br>• Packet loss<br><br><strong>QoS Techniques:</strong><br><br>1. <strong>Classification & Marking:</strong><br>   • Identify traffic types<br>   • DSCP, CoS marking<br><br>2. <strong>Policing & Shaping:</strong><br>   • Policing: Drop excess traffic<br>   • Shaping: Buffer excess traffic<br><br>3. <strong>Queuing:</strong><br>   • FIFO: First In First Out<br>   • PQ (Priority Queuing)<br>   • WFQ (Weighted Fair Queuing)<br>   • CBWFQ (Class-Based WFQ)<br><br>4. <strong>Congestion Avoidance:</strong><br>   • RED (Random Early Detection)<br>   • WRED (Weighted RED)<br><br><strong>DiffServ (Differentiated Services):</strong><br>• Per-hop behavior<br>• EF (Expedited Forwarding): Low loss/latency<br>• AF (Assured Forwarding): Assured delivery<br>• BE (Best Effort): Default"
+        },
+        {
+            q: "Explain Network Topologies.",
+            a: "Network topology defines physical/logical arrangement of devices.<br><br><strong>Types:</strong><br><br>1. <strong>Bus Topology:</strong><br>   • Single cable, terminators at ends<br>   • Easy to install<br>   • Single point of failure<br>   • Limited length<br><br>2. <strong>Star Topology:</strong><br>   • Central hub/switch<br>   • Easy to manage<br>   • Hub failure = network down<br>   • Most common (Ethernet)<br><br>3. <strong>Ring Topology:</strong><br>   • Closed loop<br>   • Token passing<br>   • Unidirectional<br>   • Failure affects entire ring<br><br>4. <strong>Mesh Topology:</strong><br>   • Every device connects to others<br>   • Redundant paths<br>   • Expensive<br>   • High reliability<br><br>5. <strong>Tree Topology:</strong><br>   • Hierarchical<br>   • Combination of star<br>   • Scalable<br><br>6. <strong>Hybrid Topology:</strong><br>   • Combination of multiple topologies"
+        },
+        {
+            q: "What is SDN (Software-Defined Networking)?",
+            a: "SDN separates control plane from data plane for programmable networks.<br><br><strong>Architecture:</strong><br><br>1. <strong>Infrastructure Layer (Data Plane):</strong><br>   • Switches, routers<br>   • Forward packets<br><br>2. <strong>Control Layer (Control Plane):</strong><br>   • Centralized controller<br>   • Makes forwarding decisions<br><br>3. <strong>Application Layer:</strong><br>   • Network applications<br>   • Load balancing, security<br><br><strong>OpenFlow Protocol:</strong><br>• Communication between controller and switches<br>• Flow table entries<br>• Match + Action<br><br><strong>Benefits:</strong><br>• Centralized management<br>• Programmability<br>• Vendor independence<br>• Faster innovation<br>• Better automation<br><br><strong>Use Cases:</strong><br>• Data centers<br>• WAN optimization<br>• Network virtualization<br>• Traffic engineering"
+        }
+        
+    ]
+};
+
+function showQuestions(topic) {
+    const container = document.getElementById("questionsContainer");
+    
+    if (!topic || topic === "") {
+        container.innerHTML = `
+            <div class="welcome-message">
+                <i class="fas fa-arrow-up"></i>
+                <p>Select a topic to view important viva questions</p>
+            </div>
+        `;
+        return;
+    }
+
+    const questions = vivaQuestions[topic];
+    let topicName = {
+        dsa: "Data Structures & Algorithms",
+        python: "Python Programming",
+        dbms: "Database Management System",
+        os: "Operating System",
+        cn: "Computer Networks"
+    }[topic];
+
+    let html = `
+        <div class="topic-header">
+            <h3>
+                <i class="fas fa-book-open"></i>
+                ${topicName} - 30 Important Questions
+            </h3>
+        </div>
+        <div class="questions-accordion">
+    `;
+
+    questions.forEach((item, index) => {
+        html += `
+            <div class="accordion-item">
+                <div class="accordion-header" onclick="toggleAccordion(${index})">
+                    <span class="question-number">${index + 1}</span>
+                    <span class="question-title">${item.q}</span>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </div>
+                <div class="accordion-content" id="accordion-${index}">
+                    <div class="answer-content">
+                        ${item.a}
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+    container.innerHTML = html;
+}
+
+function toggleAccordion(index) {
+    const content = document.getElementById(`accordion-${index}`);
+    const header = content.previousElementSibling;
+    const icon = header.querySelector('.accordion-icon');
+    
+    if (content.classList.contains('active')) {
+        content.classList.remove('active');
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+    } else {
+        content.classList.add('active');
+        icon.classList.remove('fa-chevron-down');
+        icon.classList.add('fa-chevron-up');
+    }
+}
+</script>
+
+<!-- Add Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+/* Viva Page Styles */
+.viva-wrapper {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 40px 20px;
+}
+
+.viva-header {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    text-align: center;
+    color: white;
+}
+
+.header-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.header-content h1 i {
+    font-size: 2rem;
+}
+
+.header-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.viva-container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    padding: 30px;
+}
+
+/* Topic Selector */
+.topic-selector {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.selector-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.selector-label i {
+    color: #667eea;
+}
+
+.topic-dropdown {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1rem;
+    color: #2c3e50;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.topic-dropdown:hover, .topic-dropdown:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Welcome Message */
+.welcome-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: #7f8c8d;
+}
+
+.welcome-message i {
+    font-size: 3rem;
+    color: #667eea;
+    margin-bottom: 20px;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-20px); }
+    60% { transform: translateY(-10px); }
+}
+
+.welcome-message p {
+    font-size: 1.2rem;
+}
+
+/* Topic Header */
+.topic-header {
+    margin-bottom: 25px;
+}
+
+.topic-header h3 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.topic-header h3 i {
+    color: #667eea;
+}
+
+/* Accordion */
+.questions-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.accordion-item {
+    border: 2px solid #f0f0f0;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.accordion-item:hover {
+    border-color: #667eea;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.1);
+}
+
+.accordion-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 20px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.accordion-header:hover {
+    background: #f8f9fa;
+}
+
+.question-number {
+    width: 30px;
+    height: 30px;
+    background: #667eea;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.question-title {
+    flex: 1;
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.accordion-icon {
+    color: #667eea;
+    transition: transform 0.3s;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    background: #f8f9fa;
+}
+
+.accordion-content.active {
+    max-height: 500px;
+}
+
+.answer-content {
+    padding: 20px;
+    line-height: 1.8;
+    color: #2c3e50;
+    font-size: 1rem;
+    border-top: 2px solid #e0e0e0;
+}
+
+.answer-content strong {
+    color: #667eea;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .viva-header h1 {
+        font-size: 2rem;
+    }
+    
+    .viva-container {
+        padding: 20px;
+    }
+    
+    .topic-selector {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .selector-label {
+        align-self: flex-start;
+    }
+    
+    .topic-dropdown {
+        width: 100%;
+    }
+    
+    .accordion-header {
+        padding: 15px;
+        gap: 10px;
+    }
+    
+    .question-number {
+        width: 25px;
+        height: 25px;
+        font-size: 0.8rem;
+    }
+    
+    .question-title {
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .viva-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .viva-container {
+        padding: 15px;
+    }
+    
+    .accordion-header {
+        flex-wrap: wrap;
+    }
+    
+    .question-number {
+        order: 1;
+    }
+    
+    .question-title {
+        order: 2;
+        width: calc(100% - 45px);
+    }
+    
+    .accordion-icon {
+        order: 3;
+        margin-left: auto;
+    }
+    
+    .answer-content {
+        padding: 15px;
+        font-size: 0.95rem;
+    }
+}
+</style>
+
+{% endblock %}

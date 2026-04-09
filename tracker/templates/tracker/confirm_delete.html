@@ -1,0 +1,14 @@
+{% extends 'tracker/base.html' %}
+{% block content %}
+
+<h3>Are you sure you want to delete?</h3>
+
+<p><strong>{{ coding.problem_name }}</strong></p>
+
+<form method="POST">
+    {% csrf_token %}
+    <button class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% endblock %}

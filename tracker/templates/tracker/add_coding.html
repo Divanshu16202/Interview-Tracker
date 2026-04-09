@@ -1,0 +1,1200 @@
+{% extends 'tracker/base.html' %}
+{% load static %}
+
+{% block page_title %}Add Coding Practice{% endblock %}
+{% block page_subtitle %}Track a new problem you've solved{% endblock %}
+
+{% block content %}
+<div class="add-coding-wrapper">
+    <div class="add-coding-container">
+        <!-- Header with Icon -->
+        <div class="form-header">
+            <div class="header-icon">
+                <i class="fas fa-code"></i>
+            </div>
+            <h2>Add New Problem</h2>
+            <p>Fill in the details of the coding problem you've solved</p>
+        </div>
+
+        <!-- Main Form Card -->
+        <div class="form-card">
+            <form method="POST" id="addCodingForm">
+                {% csrf_token %}
+                
+                <!-- Display non-field errors -->
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div class="form-row">
+                    <!-- Left Column -->
+                    <div class="form-column">
+                        <!-- Platform Field -->
+                        <div class="form-group {% if form.platform.errors %}has-error{% endif %}">
+                            <label for="{{ form.platform.id_for_label }}">
+                                <i class="fas fa-globe"></i>
+                                Platform <span class="required">*</span>
+                            </label>
+                            <div class="select-wrapper">
+                                <select name="platform" id="{{ form.platform.id_for_label }}" class="form-control" required>
+                                    <option value="">-- Select Platform --</option>
+                                    <option value="LeetCode" {% if form.platform.value == 'LeetCode' %}selected{% endif %}>LeetCode</option>
+                                    <option value="HackerRank" {% if form.platform.value == 'HackerRank' %}selected{% endif %}>HackerRank</option>
+                                    <option value="CodeForces" {% if form.platform.value == 'CodeForces' %}selected{% endif %}>CodeForces</option>
+                                    <option value="CodeChef" {% if form.platform.value == 'CodeChef' %}selected{% endif %}>CodeChef</option>
+                                    <option value="GeeksforGeeks" {% if form.platform.value == 'GeeksforGeeks' %}selected{% endif %}>GeeksforGeeks</option>
+                                    <option value="Other" {% if form.platform.value == 'Other' %}selected{% endif %}>Other</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-arrow"></i>
+                            </div>
+                            {% if form.platform.help_text %}
+                            <small class="help-text">{{ form.platform.help_text }}</small>
+                            {% endif %}
+                            {% if form.platform.errors %}
+                            <div class="error-message">
+                                {% for error in form.platform.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Problem Name Field -->
+                        <div class="form-group {% if form.problem_name.errors %}has-error{% endif %}">
+                            <label for="{{ form.problem_name.id_for_label }}">
+                                <i class="fas fa-heading"></i>
+                                Problem Name <span class="required">*</span>
+                            </label>
+                            <input type="text" 
+                                   name="problem_name" 
+                                   id="{{ form.problem_name.id_for_label }}" 
+                                   class="form-control" 
+                                   value="{{ form.problem_name.value|default:'' }}"
+                                   placeholder="e.g., Two Sum, Reverse Linked List"
+                                   required>
+                            {% if form.problem_name.help_text %}
+                            <small class="help-text">{{ form.problem_name.help_text }}</small>
+                            {% endif %}
+                            {% if form.problem_name.errors %}
+                            <div class="error-message">
+                                {% for error in form.problem_name.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Difficulty Field -->
+                        <div class="form-group {% if form.difficulty.errors %}has-error{% endif %}">
+                            <label>
+                                <i class="fas fa-chart-line"></i>
+                                Difficulty Level <span class="required">*</span>
+                            </label>
+                            
+                            <div class="difficulty-selector">
+                                <div class="difficulty-option" onclick="selectDifficulty('Easy')">
+                                    <input type="radio" name="difficulty" value="Easy" id="difficulty_easy" {% if form.difficulty.value == 'Easy' %}checked{% endif %} required>
+                                    <div class="difficulty-card easy {% if form.difficulty.value == 'Easy' %}selected{% endif %}">
+                                        <div class="difficulty-icon">
+                                            <i class="fas fa-seedling"></i>
+                                        </div>
+                                        <div class="difficulty-info">
+                                            <h4>Easy</h4>
+                                            <span class="difficulty-badge">Beginner Friendly</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="difficulty-option" onclick="selectDifficulty('Medium')">
+                                    <input type="radio" name="difficulty" value="Medium" id="difficulty_medium" {% if form.difficulty.value == 'Medium' %}checked{% endif %}>
+                                    <div class="difficulty-card medium {% if form.difficulty.value == 'Medium' %}selected{% endif %}">
+                                        <div class="difficulty-icon">
+                                            <i class="fas fa-star"></i>
+                                        </div>
+                                        <div class="difficulty-info">
+                                            <h4>Medium</h4>
+                                            <span class="difficulty-badge">Intermediate</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="difficulty-option" onclick="selectDifficulty('Hard')">
+                                    <input type="radio" name="difficulty" value="Hard" id="difficulty_hard" {% if form.difficulty.value == 'Hard' %}checked{% endif %}>
+                                    <div class="difficulty-card hard {% if form.difficulty.value == 'Hard' %}selected{% endif %}">
+                                        <div class="difficulty-icon">
+                                            <i class="fas fa-skull"></i>
+                                        </div>
+                                        <div class="difficulty-info">
+                                            <h4>Hard</h4>
+                                            <span class="difficulty-badge">Advanced</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {% if form.difficulty.help_text %}
+                            <small class="help-text">{{ form.difficulty.help_text }}</small>
+                            {% endif %}
+                            {% if form.difficulty.errors %}
+                            <div class="error-message">
+                                {% for error in form.difficulty.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="form-column">
+                        <!-- Date Solved Field -->
+                        <div class="form-group {% if form.date.errors %}has-error{% endif %}">
+                            <label for="{{ form.date.id_for_label }}">
+                                <i class="fas fa-calendar-alt"></i>
+                                Date Solved <span class="required">*</span>
+                            </label>
+                            <div class="date-input-wrapper">
+                                <input type="date" 
+                                       name="date" 
+                                       id="{{ form.date.id_for_label }}" 
+                                       class="form-control" 
+                                       value="{{ form.date.value|date:'Y-m-d'|default:'' }}"
+                                       required>
+                                <i class="fas fa-calendar-day calendar-icon"></i>
+                            </div>
+                            {% if form.date.help_text %}
+                            <small class="help-text">{{ form.date.help_text }}</small>
+                            {% endif %}
+                            {% if form.date.errors %}
+                            <div class="error-message">
+                                {% for error in form.date.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Solution Link Field -->
+                        <div class="form-group {% if form.solution_link.errors %}has-error{% endif %}">
+                            <label for="{{ form.solution_link.id_for_label }}">
+                                <i class="fas fa-link"></i>
+                                Solution Link
+                            </label>
+                            <div class="link-input-wrapper">
+                                <i class="fas fa-globe link-icon"></i>
+                                <input type="url" 
+                                       name="solution_link" 
+                                       id="{{ form.solution_link.id_for_label }}" 
+                                       class="form-control" 
+                                       value="{{ form.solution_link.value|default:'' }}"
+                                       placeholder="https://github.com/your-solution or LeetCode solution link">
+                            </div>
+                            {% if form.solution_link.help_text %}
+                            <small class="help-text">{{ form.solution_link.help_text }}</small>
+                            {% endif %}
+                            {% if form.solution_link.errors %}
+                            <div class="error-message">
+                                {% for error in form.solution_link.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Tags Field (Optional) -->
+                        <div class="form-group">
+                            <label for="tags">
+                                <i class="fas fa-tags"></i>
+                                Tags
+                            </label>
+                            <input type="text" 
+                                   name="tags" 
+                                   id="tags" 
+                                   class="form-control" 
+                                   placeholder="e.g., array, dynamic-programming, graph"
+                                   value="{{ form.tags.value|default:'' }}">
+                            <small class="help-text">Separate tags with commas (e.g., array, recursion, dp)</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notes / Approach Field (Full Width) -->
+                <div class="form-group full-width {% if form.notes.errors %}has-error{% endif %}">
+                    <label for="{{ form.notes.id_for_label }}">
+                        <i class="fas fa-sticky-note"></i>
+                        Notes / Approach
+                    </label>
+                    <div class="notes-wrapper">
+                        <textarea name="notes" 
+                                  id="{{ form.notes.id_for_label }}" 
+                                  class="form-control notes-textarea" 
+                                  placeholder="Write your approach, key insights, time complexity, space complexity, or any important notes about this problem..."
+                                  maxlength="2000">{{ form.notes.value|default:'' }}</textarea>
+                        <div class="notes-toolbar">
+                            <div class="notes-actions">
+                                <button type="button" class="note-action-btn" onclick="insertText('**', '**')" title="Bold">
+                                    <i class="fas fa-bold"></i>
+                                </button>
+                                <button type="button" class="note-action-btn" onclick="insertText('*', '*')" title="Italic">
+                                    <i class="fas fa-italic"></i>
+                                </button>
+                                <button type="button" class="note-action-btn" onclick="insertText('`', '`')" title="Code">
+                                    <i class="fas fa-code"></i>
+                                </button>
+                                <button type="button" class="note-action-btn" onclick="insertText('```\n', '\n```')" title="Code Block">
+                                    <i class="fas fa-terminal"></i>
+                                </button>
+                                <button type="button" class="note-action-btn" onclick="insertBulletPoint()" title="Bullet Point">
+                                    <i class="fas fa-list-ul"></i>
+                                </button>
+                            </div>
+                            <div class="notes-stats">
+                                <span id="charCount">0</span>/2000 characters
+                                <span class="stat-separator">•</span>
+                                <span id="wordCount">0</span> words
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notes-preview" id="notesPreview">
+                        <div class="preview-header">
+                            <i class="fas fa-eye"></i>
+                            <span>Preview</span>
+                        </div>
+                        <div class="preview-content" id="previewContent"></div>
+                    </div>
+                    {% if form.notes.help_text %}
+                    <small class="help-text">{{ form.notes.help_text }}</small>
+                    {% endif %}
+                    {% if form.notes.errors %}
+                    <div class="error-message">
+                        {% for error in form.notes.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-save" id="saveBtn">
+                        <i class="fas fa-save"></i>
+                        <span>Save Problem</span>
+                    </button>
+                    
+                    <a href="{% url 'dashboard' %}" class="btn-cancel">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </a>
+                    
+                    <button type="reset" class="btn-reset" onclick="resetForm()">
+                        <i class="fas fa-undo"></i>
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="tips-section">
+            <h3>
+                <i class="fas fa-lightbulb"></i>
+                Tips for Effective Tracking
+            </h3>
+            
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>Be Specific</h4>
+                    <p>Use clear problem names that you can easily search later</p>
+                </div>
+                
+                <div class="tip-card">
+                    <i class="fas fa-clock"></i>
+                    <h4>Add Notes</h4>
+                    <p>Write down your approach and key learnings while fresh</p>
+                </div>
+                
+                <div class="tip-card">
+                    <i class="fas fa-tag"></i>
+                    <h4>Use Tags</h4>
+                    <p>Categorize problems by topic for better organization</p>
+                </div>
+                
+                <div class="tip-card">
+                    <i class="fas fa-link"></i>
+                    <h4>Save Solutions</h4>
+                    <p>Link to your solution code for future reference</p>
+                </div>
+                
+                <div class="tip-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>Track Complexity</h4>
+                    <p>Note time and space complexity in your approach</p>
+                </div>
+                
+                <div class="tip-card">
+                    <i class="fas fa-redo-alt"></i>
+                    <h4>Review Later</h4>
+                    <p>Mark problems for review to reinforce learning</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal (shown after successful submission) -->
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center p-4">
+                <div class="success-animation">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h4>Problem Added Successfully!</h4>
+                <p>Your coding problem has been saved to your tracker.</p>
+                <div class="modal-actions">
+                    <a href="{% url 'add_coding' %}" class="btn-add-another">
+                        <i class="fas fa-plus"></i>
+                        Add Another
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="btn-view-all">
+                        <i class="fas fa-list"></i>
+                        View All
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Difficulty selector
+function selectDifficulty(difficulty) {
+    // Update radio button
+    document.getElementById(`difficulty_${difficulty.toLowerCase()}`).checked = true;
+    
+    // Update UI
+    document.querySelectorAll('.difficulty-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    event.currentTarget.querySelector('.difficulty-card').classList.add('selected');
+}
+
+// Notes text formatting
+function insertText(before, after) {
+    const textarea = document.getElementById('{{ form.notes.id_for_label }}');
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const newText = before + selectedText + after;
+    
+    textarea.value = textarea.value.substring(0, start) + newText + textarea.value.substring(end);
+    textarea.focus();
+    textarea.setSelectionRange(start + before.length, end + before.length);
+    
+    updateNotesPreview();
+    updateCharCount();
+}
+
+function insertBulletPoint() {
+    const textarea = document.getElementById('{{ form.notes.id_for_label }}');
+    const start = textarea.selectionStart;
+    const value = textarea.value;
+    
+    // Find the start of the line
+    let lineStart = value.lastIndexOf('\n', start - 1) + 1;
+    if (lineStart === -1) lineStart = 0;
+    
+    const newText = value.substring(0, lineStart) + '• ' + value.substring(lineStart);
+    textarea.value = newText;
+    textarea.focus();
+    textarea.setSelectionRange(lineStart + 2, lineStart + 2);
+    
+    updateNotesPreview();
+    updateCharCount();
+}
+
+// Update character count and word count
+function updateCharCount() {
+    const textarea = document.getElementById('{{ form.notes.id_for_label }}');
+    const charCount = textarea.value.length;
+    const maxLength = textarea.getAttribute('maxlength') || 2000;
+    
+    document.getElementById('charCount').textContent = charCount;
+    
+    // Update word count
+    const words = textarea.value.trim() ? textarea.value.trim().split(/\s+/).length : 0;
+    document.getElementById('wordCount').textContent = words;
+    
+    // Change color if approaching limit
+    const charCountElement = document.getElementById('charCount');
+    if (charCount > maxLength * 0.9) {
+        charCountElement.style.color = '#e74c3c';
+    } else {
+        charCountElement.style.color = '#667eea';
+    }
+}
+
+// Update notes preview with markdown-like formatting
+function updateNotesPreview() {
+    const textarea = document.getElementById('{{ form.notes.id_for_label }}');
+    const preview = document.getElementById('previewContent');
+    let text = textarea.value;
+    
+    // Simple markdown-like formatting
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // Bold
+    text = text.replace(/\*(.*?)\*/g, '<em>$1</em>'); // Italic
+    text = text.replace(/```(.*?)```/gs, '<pre><code>$1</code></pre>'); // Code block
+    text = text.replace(/`(.*?)`/g, '<code>$1</code>'); // Inline code
+    text = text.replace(/^• /gm, '<span class="bullet">•</span> '); // Bullet points
+    text = text.replace(/\n/g, '<br>'); // Line breaks
+    
+    preview.innerHTML = text || '<span class="preview-placeholder">Preview will appear here...</span>';
+}
+
+// Reset form
+function resetForm() {
+    document.getElementById('addCodingForm').reset();
+    document.querySelectorAll('.difficulty-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    updateCharCount();
+    updateNotesPreview();
+}
+
+// Form submission with validation
+document.getElementById('addCodingForm').addEventListener('submit', function(e) {
+    const platform = document.getElementById('{{ form.platform.id_for_label }}').value;
+    const problemName = document.getElementById('{{ form.problem_name.id_for_label }}').value;
+    const difficulty = document.querySelector('input[name="difficulty"]:checked');
+    const date = document.getElementById('{{ form.date.id_for_label }}').value;
+    
+    if (!platform || !problemName || !difficulty || !date) {
+        e.preventDefault();
+        alert('Please fill in all required fields (Platform, Problem Name, Difficulty, and Date)');
+        return;
+    }
+    
+    // Show loading state
+    const saveBtn = document.getElementById('saveBtn');
+    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    saveBtn.disabled = true;
+});
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Set default date to today if not set
+    const dateInput = document.getElementById('{{ form.date.id_for_label }}');
+    if (dateInput && !dateInput.value) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+    }
+    
+    // Add event listeners for notes
+    const notesTextarea = document.getElementById('{{ form.notes.id_for_label }}');
+    if (notesTextarea) {
+        notesTextarea.addEventListener('input', function() {
+            updateCharCount();
+            updateNotesPreview();
+        });
+        
+        // Initial update
+        updateCharCount();
+        updateNotesPreview();
+    }
+    
+    // Show success modal if URL parameter indicates success
+    if (window.location.search.includes('success=true')) {
+        const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+        successModal.show();
+    }
+});
+</script>
+
+<!-- Add Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+.add-coding-wrapper {
+    min-height: 80vh;
+    padding: 30px 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+}
+
+.add-coding-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Form Header */
+.form-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.header-icon i {
+    font-size: 30px;
+    color: white;
+}
+
+.form-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.form-header p {
+    color: #7f8c8d;
+    font-size: 16px;
+}
+
+/* Form Card */
+.form-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+/* Form Row Layout */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 25px;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Form Groups */
+.form-group {
+    position: relative;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+}
+
+.form-group label i {
+    color: #667eea;
+    font-size: 16px;
+}
+
+.required {
+    color: #e74c3c;
+    margin-left: 4px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="url"],
+.form-group input[type="date"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s;
+    background: white;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="url"]:focus,
+.form-group input[type="date"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Select Wrapper */
+.select-wrapper {
+    position: relative;
+}
+
+.select-arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+    pointer-events: none;
+}
+
+/* Date Input */
+.date-input-wrapper {
+    position: relative;
+}
+
+.calendar-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+    pointer-events: none;
+}
+
+/* Link Input */
+.link-input-wrapper {
+    position: relative;
+}
+
+.link-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+}
+
+.link-input-wrapper input {
+    padding-left: 40px;
+}
+
+/* Difficulty Selector */
+.difficulty-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.difficulty-option {
+    cursor: pointer;
+}
+
+.difficulty-option input[type="radio"] {
+    display: none;
+}
+
+.difficulty-card {
+    padding: 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s;
+    background: #f8f9fa;
+}
+
+.difficulty-card.easy:hover {
+    border-color: #27ae60;
+    background: rgba(46, 204, 113, 0.05);
+}
+
+.difficulty-card.medium:hover {
+    border-color: #f39c12;
+    background: rgba(241, 196, 15, 0.05);
+}
+
+.difficulty-card.hard:hover {
+    border-color: #c0392b;
+    background: rgba(231, 76, 60, 0.05);
+}
+
+.difficulty-card.selected {
+    border-color: transparent;
+    color: white;
+}
+
+.difficulty-card.selected.easy {
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+}
+
+.difficulty-card.selected.medium {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+}
+
+.difficulty-card.selected.hard {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+}
+
+.difficulty-icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.difficulty-card.selected .difficulty-icon {
+    color: white;
+}
+
+.difficulty-info h4 {
+    margin: 0 0 5px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.difficulty-card.selected .difficulty-info h4 {
+    color: white;
+}
+
+.difficulty-badge {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    display: inline-block;
+}
+
+.difficulty-card:not(.selected) .difficulty-badge {
+    display: none;
+}
+
+/* Notes Section */
+.notes-wrapper {
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.notes-textarea {
+    border: none !important;
+    border-radius: 0 !important;
+    min-height: 150px;
+    resize: vertical;
+    font-family: 'Courier New', monospace;
+    line-height: 1.6;
+}
+
+.notes-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+}
+
+.notes-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.note-action-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #e0e0e0;
+    background: white;
+    border-radius: 6px;
+    color: #7f8c8d;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.note-action-btn:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.notes-stats {
+    font-size: 12px;
+    color: #7f8c8d;
+}
+
+.stat-separator {
+    margin: 0 8px;
+    color: #e0e0e0;
+}
+
+#charCount {
+    font-weight: 600;
+    color: #667eea;
+}
+
+/* Notes Preview */
+.notes-preview {
+    margin-top: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.preview-header {
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.preview-header i {
+    color: #667eea;
+}
+
+.preview-content {
+    padding: 15px;
+    min-height: 80px;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+.preview-placeholder {
+    color: #bdc3c7;
+    font-style: italic;
+}
+
+.preview-content code {
+    background: #f8f9fa;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #e74c3c;
+}
+
+.preview-content pre {
+    background: #2c3e50;
+    color: white;
+    padding: 10px;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+.preview-content .bullet {
+    color: #667eea;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* Help Text */
+.help-text {
+    display: block;
+    font-size: 12px;
+    color: #7f8c8d;
+    margin-top: 5px;
+}
+
+/* Error States */
+.form-group.has-error input,
+.form-group.has-error select,
+.form-group.has-error textarea {
+    border-color: #e74c3c;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.error-message::before {
+    content: '⚠️';
+    font-size: 12px;
+}
+
+/* Alert */
+.alert-danger {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    color: #c0392b;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-save {
+    flex: 2;
+    padding: 14px 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-save:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-save:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-cancel, .btn-reset {
+    flex: 1;
+    padding: 14px 30px;
+    background: #f8f9fa;
+    color: #7f8c8d;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.btn-cancel:hover, .btn-reset:hover {
+    background: #e0e0e0;
+    color: #2c3e50;
+}
+
+/* Tips Section */
+.tips-section {
+    margin-top: 40px;
+}
+
+.tips-section h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.tips-section h3 i {
+    color: #f1c40f;
+}
+
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.tip-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.tip-card i {
+    font-size: 30px;
+    color: #667eea;
+    margin-bottom: 15px;
+}
+
+.tip-card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.tip-card p {
+    color: #7f8c8d;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Success Modal */
+.success-animation {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #27ae60, #2ecc71);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.success-animation i {
+    font-size: 40px;
+    color: white;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-add-another,
+.btn-view-all {
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-add-another {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-view-all {
+    background: #f8f9fa;
+    color: #2c3e50;
+}
+
+.btn-add-another:hover,
+.btn-view-all:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-card {
+        padding: 25px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .difficulty-selector {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-save, .btn-cancel, .btn-reset {
+        width: 100%;
+    }
+    
+    .tips-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .notes-toolbar {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-header h2 {
+        font-size: 24px;
+    }
+    
+    .tips-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+    
+    .notes-actions {
+        flex-wrap: wrap;
+    }
+}
+
+/* Loading Spinner */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+/* Autofill Styles */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+    box-shadow: 0 0 0px 1000px white inset;
+    -webkit-text-fill-color: #2c3e50;
+}
+</style>
+{% endblock %}

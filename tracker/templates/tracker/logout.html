@@ -1,0 +1,396 @@
+{% extends 'tracker/base.html' %}
+{% load static %}
+
+{% block page_title %}Logout{% endblock %}
+{% block page_subtitle %}See you next time!{% endblock %}
+
+{% block content %}
+<div class="logout-wrapper">
+    <div class="logout-container">
+        <!-- Success Animation -->
+        <div class="success-animation">
+            <div class="checkmark-circle">
+                <div class="checkmark draw"></div>
+            </div>
+        </div>
+        
+        <!-- Logout Message -->
+        <h2>Logged Out Successfully!</h2>
+        <p class="logout-message">You have been securely logged out of your account.</p>
+        
+        <!-- Redirect Info -->
+        <div class="redirect-info">
+            <p>Redirecting you to login page in <span id="countdown">3</span> seconds...</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+        
+        <!-- Manual Redirect Options -->
+        <div class="redirect-options">
+            <p>Not redirected?</p>
+            <div class="button-group">
+                <a href="{% url 'login' %}" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Go to Login Now
+                </a>
+                <a href="{% url 'dashboard' %}" class="btn-home">
+                    <i class="fas fa-home"></i>
+                    Return to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Logout Success Popup (shown immediately) -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+    <div id="logoutToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header bg-success text-white">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong class="me-auto">Success</strong>
+            <small>just now</small>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <i class="fas fa-sign-out-alt me-2"></i>
+            You have been successfully logged out!
+        </div>
+    </div>
+</div>
+
+<!-- Auto-redirect script -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Countdown timer
+    let seconds = 3;
+    const countdownElement = document.getElementById('countdown');
+    const progressBar = document.getElementById('progressBar');
+    
+    // Initial progress bar width
+    progressBar.style.width = '100%';
+    
+    // Update countdown every second
+    const interval = setInterval(function() {
+        seconds--;
+        countdownElement.textContent = seconds;
+        
+        // Update progress bar (decrease by 33.33% each second)
+        progressBar.style.width = (seconds * 33.33) + '%';
+        
+        // Redirect when countdown reaches 0
+        if (seconds <= 0) {
+            clearInterval(interval);
+            window.location.href = "{% url 'login' %}";
+        }
+    }, 1000);
+    
+    // Show toast notification
+    const toastEl = document.getElementById('logoutToast');
+    if (toastEl) {
+        const toast = new bootstrap.Toast(toastEl, {
+            delay: 5000  // Auto hide after 5 seconds
+        });
+        toast.show();
+    }
+    
+    // Optional: Add fade out effect before redirect
+    window.addEventListener('beforeunload', function() {
+        document.body.style.opacity = '0.5';
+        document.body.style.transition = 'opacity 0.5s';
+    });
+});
+
+// Fallback redirect if something goes wrong
+window.setTimeout(function() {
+    window.location.href = "{% url 'login' %}";
+}, 4000);  // 4 seconds fallback
+</script>
+
+<style>
+.logout-wrapper {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.logout-container {
+    max-width: 500px;
+    width: 100%;
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Success Animation */
+.success-animation {
+    margin-bottom: 30px;
+}
+
+.checkmark-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #4caf50;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #4caf50;
+    animation: fill 0.4s ease-in-out 0.4s forwards, scale 0.3s ease-in-out 0.9s both;
+    margin: 0 auto;
+    position: relative;
+    background: #f0f0f0;
+}
+
+.checkmark-circle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #4caf50;
+    transform: scale(0);
+    animation: fill-circle 0.4s ease-in-out 0.4s forwards;
+}
+
+.checkmark {
+    transform-origin: 50% 50%;
+    stroke-width: 3;
+    stroke: #fff;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    position: relative;
+    z-index: 10;
+}
+
+.checkmark::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill-circle {
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 30px #4caf50;
+    }
+}
+
+/* Logout Message */
+.logout-container h2 {
+    color: #2c3e50;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.logout-message {
+    color: #7f8c8d;
+    font-size: 16px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* Redirect Info */
+.redirect-info {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 25px;
+}
+
+.redirect-info p {
+    color: #2c3e50;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+.redirect-info p span {
+    font-weight: 700;
+    color: #667eea;
+    font-size: 20px;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    width: 100%;
+    transition: width 1s linear;
+    border-radius: 3px;
+}
+
+/* Redirect Options */
+.redirect-options {
+    margin-top: 20px;
+}
+
+.redirect-options p {
+    color: #95a5a6;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.btn-login, .btn-home {
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.btn-login {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.btn-home {
+    background: #f0f0f0;
+    color: #2c3e50;
+}
+
+.btn-home:hover {
+    background: #e0e0e0;
+    transform: translateY(-2px);
+}
+
+/* Toast Notification */
+.toast {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.toast-header {
+    background: #27ae60;
+    color: white;
+    border-bottom: none;
+}
+
+.toast-header .btn-close-white {
+    filter: brightness(0) invert(1);
+}
+
+.toast-body {
+    background: white;
+    padding: 15px;
+    font-size: 14px;
+    color: #2c3e50;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .logout-container {
+        padding: 30px 20px;
+    }
+    
+    .logout-container h2 {
+        font-size: 24px;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .btn-login, .btn-home {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .checkmark-circle {
+        width: 80px;
+        height: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logout-wrapper {
+        padding: 15px;
+    }
+    
+    .logout-container {
+        padding: 25px 15px;
+    }
+    
+    .logout-container h2 {
+        font-size: 22px;
+    }
+    
+    .logout-message {
+        font-size: 14px;
+    }
+}
+</style>
+
+<!-- Add Font Awesome if not already in base -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
